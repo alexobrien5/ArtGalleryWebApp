@@ -1,3 +1,26 @@
 :root {
   --bs-body-bg: var(--bs-gray-100);
 }
+
+/* Set initial styles for the dropdown menu */
+.navbar-nav .nav-item.dropdown .dropdown-menu {
+    display: block;
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: 50% 0;
+    transition: transform 0.3s, opacity 0.3s;
+}
+
+/* Expand the dropdown on hover (only for screens wider than 768px) */
+@media (min-width: 768px) {
+    .navbar-nav .nav-item.dropdown:hover .dropdown-menu {
+        transform: scaleY(1);
+        opacity: 1;
+    }
+}
+
+/* Style the dropdown items on hover */
+.navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item:hover {
+    background-color: #333; /* Change to your desired hover background color */
+    color: white; /* Change to your desired hover text color */
+}
