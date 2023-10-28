@@ -1,35 +1,40 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Diane Ohnemus</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mx-auto mb-2 mb-lg-0>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Welcome</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/about">About</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="/portfolio" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Portfolio
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#">Watercolors</a></li>
-                <li><a class="dropdown-item" href="#">Portraits</a></li>
-                <!-- <li><hr class="dropdown-divider"></li> -->
-                <li><a class="dropdown-item" href="#">Figurative</a></li>
-              </ul>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/contact">Contact</a>
-            </li>
-            <!-- <li class="nav-item">
-              <a class="nav-link disabled">Disabled</a>
-            </li> -->
-          </ul>
-        </div>
-    </div>
-</nav>
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Diane Ohnemus</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav mx-auto mb-2 mb-lg-0>
+                    <li class="nav-item">
+                      <a <% if (page_name === 'index') { %>class="nav-link active" aria-current="page" <% } else { %>class="nav-link"<% } %> href="/">Welcome</a>
+                    </li>
+                    <li class="nav-item">
+                      <a <% if (page_name === 'about') { %>class="nav-link active" aria-current="page" <% } else { %>class="nav-link"<% } %> href="/about">About</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a <% if (page_name === 'portfolio') { %>class="nav-link active" <% } else { %>class="nav-link<% } %> dropdown-toggle" href="/portfolio" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Portfolio
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#">Figurative</a></li>
+                            <li><a class="dropdown-item" href="#">Scapes</a></li>
+                            <!-- <li><hr class="dropdown-divider"></li> -->
+                            <li><a class="dropdown-item" href="#">Still Life</a></li>
+                            <li><a class="dropdown-item" href="#">Other Works</a></li>
+                          </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a <% if (page_name === 'contact') { %>class="nav-link active" aria-current="page" <% } else { %>class="nav-link"<% } %> href="/contact">Contact</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a <% if (page_name === 'upload') { %>class="nav-link active" aria-current="page" <% } else { %>class="nav-link"<% } %> href="/upload">Upload</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                      <a class="nav-link disabled">Disabled</a>
+                    </li> -->
+                  </ul>
+                </div>
+            </div>
+        </nav>

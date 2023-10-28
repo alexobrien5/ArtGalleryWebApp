@@ -16,29 +16,34 @@ app.use(fileUpload());
 
 //routes
 app.get("/", (req, res) => {
-  res.render("index");
+    let page = "index";
+    res.render("index", { "page_name": page });
 }); //welcome
 
 app.get("/about", (req, res) => {
-  res.render("about");
+    let page = "about";
+    res.render("about", { "page_name": page });
 }); //about
 
 app.get("/portfolio", (req, res) => {
-  res.render("portfolio");
+    let page = "portfolio";
+    res.render("portfolio", { "page_name": page });
 }); //portfolio
 
 app.get("/contact", (req, res) => {
-  res.render("contact");
+    let page = "contact";
+    res.render("contact", { "page_name": page });
 }); //contact
 
 app.get("/upload", (req, res) => {
-  res.render("upload");
+    let page = "upload";
+    res.render("upload", { "page_name": page });
 }); //upload
 
-app.get("/dbTest", async function (req, res) {
-  let sql = "SELECT CURDATE()";
-  let rows = await executeSQL(sql);
-  res.send(rows);
+app.get("/dbTest", async function(req, res) {
+    let sql = "SELECT CURDATE()";
+    let rows = await executeSQL(sql);
+    res.send(rows);
 }); //dbTest
 
 app.post('/upload', (req, res) => {
@@ -56,15 +61,15 @@ app.post('/upload', (req, res) => {
 
 //functions
 async function executeSQL(sql, params) {
-  return new Promise(function (resolve, reject) {
-    pool.query(sql, params, function (err, rows, fields) {
-      if (err) throw err;
-      resolve(rows);
+    return new Promise(function(resolve, reject) {
+        pool.query(sql, params, function(err, rows, fields) {
+            if (err) throw err;
+            resolve(rows);
+        });
     });
-  });
 } //executeSQL
 
 //start server
 app.listen(3000, () => {
-  console.log("Expresss server running...");
+    console.log("Expresss server running...");
 });
