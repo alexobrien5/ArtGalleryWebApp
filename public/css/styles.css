@@ -2,6 +2,13 @@
   --bs-body-bg: var(--bs-gray-100);
 }
 
+/* Hide the dropdown menu in the collapsed navigation state */
+@media (max-width: 1279px) {
+    .navbar-nav .nav-item.dropdown .dropdown-menu {
+        display: none;
+    }
+}
+
 /* Set initial styles for the dropdown menu */
 .navbar-nav .nav-item.dropdown .dropdown-menu {
     display: block;
@@ -12,15 +19,36 @@
 }
 
 /* Expand the dropdown on hover (only for screens wider than 768px) */
-@media (min-width: 768px) {
+@media (min-width: 1280px) {
     .navbar-nav .nav-item.dropdown:hover .dropdown-menu {
         transform: scaleY(1);
         opacity: 1;
     }
 }
 
+/* Reset the dropdown behavior for screens smaller than your specified breakpoint */
+@media (max-width: 1279px) {
+    .navbar-nav .nav-item.dropdown:hover .dropdown-menu {
+        display: block;
+        opacity: 1;
+        transform: scaleY(1);
+    }
+}
+
 /* Style the dropdown items on hover */
 .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item:hover {
-    background-color: #333; /* Change to your desired hover background color */
-    color: white; /* Change to your desired hover text color */
+    background-color: #333;
+    color: white;
+}
+
+/* Override the space reserved for the dropdown menu in collapsed state */
+@media (max-width: 1279px) {
+    .navbar-nav .nav-item.dropdown {
+        margin-bottom: 0; /* Remove any bottom margin */
+        position: static; /* Change the position property to static */
+    }
+
+    .navbar-nav .nav-item.dropdown .dropdown-menu {
+        display: none; /* Hide the dropdown menu in collapsed state */
+    }
 }
