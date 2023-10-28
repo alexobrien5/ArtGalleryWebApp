@@ -29,6 +29,7 @@
                 <li class="nav-item">
                     <a class="nav-link active" href="/contact">Contact</a>
                 </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="/upload">Upload</a>
                 </li>
@@ -41,9 +42,15 @@
     </nav>
 
     <div class="container">
-        <h1>Contact page</h1>
-        <p>Send an email to dohnemus1@gmail.com or fill out the form below.</p>
-        <!-- <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScVwEjjjcnlvtfzUMHMOA9RVMFgF2yTBh5dfBErLhkCrMOOSA/viewform?embedded=true" width="760" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe> -->
+        <h1>Upload Page</h1>
+        <p>Upload new pictures to the gallery using the form below</p>
+      
+      <!DOCTYPE html>
+      <form action="/upload" method="POST" enctype="multipart/form-data">
+          <input type="file" name="image" />
+          <button type="submit">Upload</button>
+      </form>
+      
     </div>
 <%- include("partials/footer.ejs") %>
 </body>
