@@ -6,7 +6,7 @@ Every new repl comes with a `.replit` and a `replit.nix` file that let you confi
 
 Every new repl is now a Nix repl, which means you can install any package available on Nix, and support any number of languages in a single repl. You can search for a list of available packages [here](https://search.nixos.org/packages).
 
-The `replit.nix` file should look something like the example below. The `deps` array specifies which Nix packages you would like to be available in your environment. 
+The `replit.nix` file should look something like the example below. The `deps` array specifies which Nix packages you would like to be available in your environment.
 
 ```nix
 { pkgs }: {
@@ -15,11 +15,13 @@ The `replit.nix` file should look something like the example below. The `deps` a
     ];
 }
 ```
+
 ### Learn More About Nix
 
 If you'd like to learn more about Nix, here are some great resources:
 
 #### Written Guides
+
 - [Getting started with Nix](https://docs.replit.com/programming-ide/nix-on-replit) — Our own getting started guide
 - [Building with Nix on Replit](https://docs.replit.com/tutorials/python/build-with-nix) — Deploy a production web stack on Replit with Nix
 - [Nix Pills](https://nixos.org/guides/nix-pills/) — Guided introduction to Nix
@@ -27,10 +29,10 @@ If you'd like to learn more about Nix, here are some great resources:
 - [A tour of Nix](https://nixcloud.io/tour) — Learn the nix language itself
 
 #### Video Guides
+
 - [Nixology](https://www.youtube.com/playlist?list=PLRGI9KQ3_HP_OFRG6R-p4iFgMSK1t5BHs) — A series of videos introducing Nix in a practical way
 - [Taking the Nix pill](https://www.youtube.com/watch?v=QwLWIy2KleE) — An introduction to what Nix is, how it works, and a walkthrough of publishing several new languages to Replit within an hour.
 - [Nix: A Deep Dive](https://www.youtube.com/watch?v=TsZte_9GfPE) — A deep dive on Nix: what Nix is, why you should use it, and how it works.
-
 
 ### `.replit`
 
@@ -64,7 +66,7 @@ language = "rust"
   # Enabled package guessing
   guessImports = false
 
-# Per language configuration: language.<lang name> 
+# Per language configuration: language.<lang name>
 [languages.rust]
 # The glob pattern to match files for this programming language
 pattern = "**/*.rs"
@@ -74,7 +76,7 @@ pattern = "**/*.rs"
     start = ["rust-analyzer"]
 ```
 
-In the code above, the strings in the array assigned to `run` are executed in order in the shell whenever you hit the "Run" button. 
+In the code above, the strings in the array assigned to `run` are executed in order in the shell whenever you hit the "Run" button.
 
 The `language` configuration option helps the IDE understand how to provide features like [packaging](https://blog.replit.com/upm) and [code intelligence](https://blog.replit.com/intel).
 
@@ -92,7 +94,7 @@ A `Command` can either be a string or a list of strings. If the `Command` is a s
   - **Type:** `Command`
   - **Description:** The command to run the repl.
 - `entrypoint`
-  - **Type:**  `string`
+  - **Type:** `string`
   - **Description:** The name of the main file including the extension. This is the file that will be run, and shown by default when opening the editor.
 - `onBoot`
   - **Type:** `Command`
@@ -120,8 +122,8 @@ A `Command` can either be a string or a list of strings. If the `Command` is a s
 - `[unitTest]`
   - Enables unit testing to the repl.
   - `language`
-      - **Type:** `string`
-      - **Description:** The language you want the unit tests to run. Supported strings: `java`, `python`, and `nodejs`.
+    - **Type:** `string`
+    - **Description:** The language you want the unit tests to run. Supported strings: `java`, `python`, and `nodejs`.
 - `[packager]`
   - **Description:** Package management configuration. Learn more about installing packages [here](https://docs.replit.com/repls/packages/#DirectImports).
   - `afterInstall`
@@ -148,7 +150,7 @@ A `Command` can either be a string or a list of strings. If the `Command` is a s
   - **Description:** Per-language configuration. The language name has no special meaning other than to allow multiple languages to be configured at once.
   - `pattern`
     - **Type:** `string`
-    - **Description:** A [glob](https://en.wikipedia.org/wiki/Glob_(programming)) used to identify which files belong to this language configuration (`**/*.js`)
+    - **Description:** A [glob](<https://en.wikipedia.org/wiki/Glob_(programming)>) used to identify which files belong to this language configuration (`**/*.js`)
   - `syntax`
     - **Type:** `string`
     - **Description:** The language to use for syntax highlighting.
@@ -166,12 +168,21 @@ A `Command` can either be a string or a list of strings. If the `Command` is a s
   - **Description:** Advanced users only. See field types & docstrings [here](https://gist.github.com/Bardia95/98987c69c6970b1bb0698b863e2a84de#file-dot-replit-debugger-config-go), and in the advanced section below.
 
 ### Example configurations
+
 #### Beginner
+
 ##### [LaTeX](https://replit.com/@ZachAtReplit/LaTeX?v=1#.replit)
+
 ##### [Clojure](https://replit.com/@replit/Clojure?v=1#.replit)
+
 #### Advanced
+
 ##### [Python](https://replit.com/@replit/Python?v=1)
+
 ##### [HTML, CSS, JS](https://replit.com/@replit/HTML-CSS-JS?v=1#.replit)
+
 ##### [Java](https://replit.com/@replit/Java-Beta?v=1#.replit)
+
 ##### [Node.js](https://replit.com/@replit/Nodejs?v=1#.replit)
+
 ##### [C++](https://replit.com/@replit/CPlusPlus?v=1)
