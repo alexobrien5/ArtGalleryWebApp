@@ -18,8 +18,8 @@
     transition: transform 0.3s, opacity 0.3s;
 }
 
-/* Expand the dropdown on hover (only for screens wider than 768px) */
-@media (min-width: 1280px) {
+/* Expand the dropdown on hover (only for screens wider than 1000px) */
+@media (min-width: 1000px) {
     .navbar-nav .nav-item.dropdown:hover .dropdown-menu {
         transform: scaleY(1);
         opacity: 1;
@@ -27,7 +27,7 @@
 }
 
 /* Reset the dropdown behavior for screens smaller than your specified breakpoint */
-@media (max-width: 1279px) {
+@media (max-width: 999px) {
     .navbar-nav .nav-item.dropdown:hover .dropdown-menu {
         display: block;
         opacity: 1;
@@ -42,7 +42,7 @@
 }
 
 /* Override the space reserved for the dropdown menu in collapsed state */
-@media (max-width: 1279px) {
+@media (max-width: 999px) {
     .navbar-nav .nav-item.dropdown {
         margin-bottom: 0; /* Remove any bottom margin */
         position: static; /* Change the position property to static */
