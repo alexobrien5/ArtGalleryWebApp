@@ -1,6 +1,14 @@
 :root {
   --bs-body-bg: var(--bs-gray-100);
 }
+/* Custom typography imports */
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quattrocento+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
 
 /* Hide the dropdown menu in the collapsed navigation state */
 @media (max-width: 1279px) {
@@ -52,3 +60,37 @@
         display: none; /* Hide the dropdown menu in collapsed state */
     }
 }
+body {
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+}
+
+a {
+   font: 16px/24px 'Quattrocento Sans', sans-serif;
+}
+h1 {
+  font-size: 32px;
+  font-size: 2em;
+  margin: 0.67em 0;
+  font-family: 'Cinzel', serif;
+  font-weight: normal;
+  line-height: normal;
+}
+
+p {
+  font: 16px/24px 'Quattrocento Sans', sans-serif;
+}
+
+.upload-body{
+  padding: 20px 10px;
+  
+}
+
+contact-body {
+  padding: 20px 10px;
+}
+.section-heading {
+
+}
+
+
