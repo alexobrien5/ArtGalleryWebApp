@@ -65,9 +65,14 @@ body {
   -webkit-text-size-adjust: 100%;
 }
 
-a {
-   font: 16px/24px 'Quattrocento Sans', sans-serif;
+.navbar-nav a {
+   font: 16px/24px 'Cinzel', serif;
 }
+
+.navbar-brand {
+   font: 24px 'Cinzel', serif;
+}
+
 h1 {
   font-size: 32px;
   font-size: 2em;
@@ -93,4 +98,18 @@ contact-body {
 
 }
 
+/* footer will be fixed to bottom except on mobile */
+@media (max-width: 993px) {
+    .fixed-bottom {
+        position: static;
+    }
+}
 
+/* format image view to all squares */
+.image-container img {
+    width: 300px; /* Set the desired size for your square images */
+    height: 300px;
+    object-fit: cover; /* Crop to the center while maintaining aspect ratio */
+    margin: 5px; /* Add some spacing between images */
+    border-radius: 5%;
+}
