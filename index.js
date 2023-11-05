@@ -68,7 +68,7 @@ app.post("/contact", async (req, res) => {
     mainMail(name, email, subject, message);
     res.send("Message Successfully Sent!");
   } catch (error) {
-    res.send("Message Could not be Sent");
+    res.send("Message Could Not Be Sent");
   }
   let page = "contact";
   res.render("contact", { "page_name": page });
