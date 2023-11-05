@@ -7,29 +7,51 @@
             <h1  class= "section-heading">
               Contact The Artist
             </h1>
-              <form class = "test-form">
-                <div class="form-group">
-                  <label for="exampleFormControlInput1">Test Form</label>
-                  <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+              <form action="/contact" method="post" class="contact-form">
+                <div class="contformgroup">
+                  <input
+                     type="text"
+                     class="contact-form-text"
+                     placeholder="name"
+                     name="name"
+                     required
+                     />
                 </div>
-                <div class="form-group">
-                  <label for="exampleFormControlSelect1">Test Form</label>
-                  <select class="form-control" id="exampleFormControlSelect1">
- 
-                  </select>
+                <div class="contformgroup">
+                  <input
+                     type="email"
+                     class="contact-form-text"
+                     placeholder="name@example.com"
+                     name="email"
+                     required
+                     />
                 </div>
-                <div class="form-group">
-                  <label for="exampleFormControlSelect2">Test Form</label>
-                  <select multiple class="form-control" id="exampleFormControlSelect2">
-     
-                  </select>
+                <div class="contformgroup">
+                  <input
+                     type="text"
+                     class="contact-form-text"
+                     name="subject"
+                     placeholder="subject"
+                     required
+                     />
                 </div>
-                <div class="form-group">
-                  <label for="exampleFormControlTextarea1">Test Form</label>
-                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <div class="contformgroup">
+                  <textarea
+                     class="contact-form-message"
+                     placeholder="message"
+                     name="message"
+                     ></textarea>
                 </div>
-              </form>
-            <!-- <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScVwEjjjcnlvtfzUMHMOA9RVMFgF2yTBh5dfBErLhkCrMOOSA/viewform?embedded=true" width="760" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe> -->
+                <div class="contformgroup">
+                  <input
+                     type="submit"
+                     id="form-submit"
+                     class="contact-form-btn"
+                     value="Send"
+                     required
+                     />
+                </div>
+               </form>
             </div>
           </div>
         </div>

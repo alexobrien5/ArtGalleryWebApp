@@ -3,9 +3,12 @@ const mysql = require("mysql");
 const fileUpload = require('express-fileupload');
 const app = express();
 const pool = require("./dbPool");
-const fetch = import("node-fetch");
+import("node-fetch");
 const session = require("express-session");
 const bcrypt = require("bcrypt");
+require("dotenv").config();
+const nodeMail = require("nodemailer");
+const path = require("path");
 const port = 3000;
 
 app.set("view engine", "ejs");
@@ -59,6 +62,18 @@ app.post('/upload', (req, res) => {
     res.sendStatus(200);
 });
 
+app.post("/contact", async (req, res) => {
+  const { name, email, subject, message } = req.body;
+  try {
+    mainMail(name, email, subject, message);
+    res.send("Message Successfully Sent!");
+  } catch (error) {
+    res.send("Message Could not be Sent");
+  }
+  let page = "contact";
+  res.render("contact", { "page_name": page });
+});
+
 //functions
 async function executeSQL(sql, params) {
     return new Promise(function(resolve, reject) {
@@ -68,6 +83,32 @@ async function executeSQL(sql, params) {
         });
     });
 } //executeSQL
+
+async function mainMail(name, email, subject, message) {
+  const transporter = nodeMail.createTransport({
+    service: "gmail",
+    auth: {
+      user: 'royalkwilliams@gmail.com',    //receipient's email 
+      pass: 'sxnk vlsu nvxo yjgf',         //receipient's generated password
+    },
+  });
+  const mailOption = {
+    from: email,
+    to: 'royalkwilliams@gmail.com',         //receipient's email
+    subject: subject,
+    html: `You got a message from 
+    Email : ${email}
+    Name: ${name}
+    Message: ${message}`,
+  };
+  try {
+    await transporter.sendMail(mailOption);
+    return Promise.resolve("Message Sent Successfully!");
+  } catch (error) {
+    return Promise.reject(error);
+  }
+} //end of mainMail function
+
 
 //start server
 app.listen(3000, () => {
