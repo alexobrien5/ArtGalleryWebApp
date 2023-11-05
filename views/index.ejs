@@ -2,13 +2,19 @@
     <body>
         <%- include("partials/nav.ejs") %>
 
-        <div class="container">
-            <h1>This is the home page</h1>
-            <p>LLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam interdum bibendum velit quis venenatis. Maecenas lorem est, lacinia eu mauris vitae, interdum bibendum nulla. Fusce id faucibus massa. Morbi ante justo, tempus id posuere quis, hendrerit eu enim. Quisque sed libero mollis, fringilla turpis nec, viverra tellus. Maecenas blandit dignissim diam, et interdum augue sodales sed. Praesent erat metus, convallis eu nulla sed, scelerisque consequat justo. Aenean vitae lacus aliquet, pulvinar nisi at, dapibus leo. Duis pulvinar sem eu ex convallis, vitae auctor massa imperdiet. Vivamus volutpat eu dui eget placerat. Suspendisse a felis ut enim eleifend mattis et id orci. Nullam quis consequat ex. Donec sed arcu ut nunc malesuada congue. Quisque in arcu finibus, commodo nisi ut, lobortis purus. Proin massa quam, feugiat a volutpat id, hendrerit nec libero.</p>
-            <p>In lacinia malesuada ante, non venenatis diam rhoncus vitae. Integer ac vulputate felis, eu pellentesque ex. Integer ut metus nec diam congue suscipit. Nullam at scelerisque dui, nec fringilla nunc. Sed arcu eros, hendrerit non justo eget, rutrum varius nisl. In at porttitor neque, non facilisis augue. Etiam rutrum nisi ut nunc faucibus viverra. Sed lorem est, tempus ut arcu non, imperdiet viverra libero. Phasellus fringilla cursus erat quis scelerisque. Vivamus eu luctus libero, ac congue eros. Morbi euismod dolor ut placerat scelerisque. Sed lobortis scelerisque ultrices.</p>
-            <p>Morbi in ex sem. Curabitur tincidunt erat vitae orci congue feugiat. Ut auctor tempus volutpat. Etiam blandit tortor tortor, vel iaculis enim interdum ac. Ut ut volutpat nunc. Morbi molestie ac quam eu ornare. Aenean eleifend blandit dolor vel finibus. Suspendisse vitae nunc commodo, facilisis nisl mattis, tincidunt elit. Curabitur placerat mi eros, vel venenatis ipsum ornare vitae. Morbi a mauris nec neque venenatis egestas a vestibulum tellus. Nunc tincidunt justo non eros pellentesque posuere.</p>
-            <p>Morbi lobortis libero lectus, sed pulvinar quam mollis ut. Donec varius imperdiet velit quis hendrerit. Quisque rutrum tincidunt nulla quis consectetur. Nam at mauris sit amet quam consectetur faucibus quis et turpis. Quisque vehicula volutpat mauris id imperdiet. In hac habitasse platea dictumst. Mauris luctus quis velit vitae venenatis. Sed viverra justo rutrum est maximus, nec feugiat ligula malesuada. Phasellus vitae ex ultricies turpis porttitor vulputate. In consectetur condimentum dapibus. Sed vel nibh arcu. Nullam quis massa vitae ipsum ornare tempor. Praesent pretium ornare ex. Integer mollis sodales quam, vel fringilla nibh sollicitudin volutpat.</p>
-            <p>Fusce ac pellentesque turpis, a sodales odio. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas quis sagittis turpis. Duis quam tortor, ultrices ut maximus vitae, condimentum hendrerit tellus. Morbi lobortis a turpis nec placerat. Fusce mattis diam nisi, nec elementum ligula laoreet sit amet. Phasellus quis nisl quis lectus commodo vestibulum sed at ligula. In et erat id arcu volutpat tristique. Suspendisse eleifend nibh quam, vitae pulvinar enim dapibus at. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras fringilla ex dictum accumsan condimentum. Maecenas vel elit nunc. Donec rhoncus mauris ut quam consectetur rutrum. Ut eu iaculis lorem.</p>
+        <div class="container index-body">
+          <div class= "row justify-content-center">
+            <div class="col-lg-6 text-center">
+              
+            <h1>Welcome!</h1>
+            <img src="/img/main/welcome_painting.jpg" class="img-fluid w-100 shadow-1-strong rounded mb-4"" alt="Welcome Painting">
+            <p>Thank you for visiting my portfolio website. This is a piece I call "Pear and Sunflower". Please feel free to browse my <a href="/portfolio">portfolio</a> and <a href="/contact">contact me</a> with any questions!</p>
+                <q>
+                    All you need to paint is a few tools, a little instruction, and a vision in your mind.
+                </q>
+                <p>- Bob Ross</p>
+            </div>
+          </div>
         </div>
     <%- include("partials/footer.ejs") %>
     </body>

@@ -1,12 +1,60 @@
     <%- include("partials/header.ejs") %>
     <body>
         <%- include("partials/nav.ejs") %>
-
-        <div class="container">
-            <h1>Contact page</h1>
-            <p>Send an email to dohnemus1@gmail.com or fill out the form below.</p>
-            <!-- <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScVwEjjjcnlvtfzUMHMOA9RVMFgF2yTBh5dfBErLhkCrMOOSA/viewform?embedded=true" width="760" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe> -->
+        <div class="container contact-body">
+          <div class= "row justify-content-center">
+            <div class="col-lg-6 text-center">
+            <h1  class= "section-heading">
+              Contact the Artist
+            </h1>
+              <form action="/contact" method="post" class="contact-form">
+                <div class="contformgroup">
+                  <input
+                     type="text"
+                     class="contact-form-text"
+                     placeholder="name"
+                     name="name"
+                     required
+                     />
+                </div>
+                <div class="contformgroup">
+                  <input
+                     type="email"
+                     class="contact-form-text"
+                     placeholder="name@example.com"
+                     name="email"
+                     required
+                     />
+                </div>
+                <div class="contformgroup">
+                  <input
+                     type="text"
+                     class="contact-form-text"
+                     name="subject"
+                     placeholder="subject"
+                     required
+                     />
+                </div>
+                <div class="contformgroup">
+                  <textarea
+                     class="contact-form-message"
+                     placeholder="message"
+                     name="message"
+                     ></textarea>
+                </div>
+                <div class="contformgroup">
+                  <input
+                     type="submit"
+                     id="form-submit"
+                     class="contact-form-btn"
+                     value="Send"
+                     required
+                     />
+                </div>
+               </form>
+            </div>
+          </div>
         </div>
-    <%- include("partials/footer.ejs") %>
+        <%- include("partials/footer.ejs") %>
     </body>
     </html>

@@ -2,16 +2,43 @@
 <body>
     <%- include("partials/nav.ejs") %>
 
-    <div class="container">
-        <h1>Upload Page</h1>
-        <p>Upload new pictures to the gallery using the form below</p>
+    <div class="container upload-body">
+      <div class= "row justify-content-center">
+        <div class="col-lg-6 text-center">
+          <h1 class= "section-heading">
+          Upload
+          </h1>
+          <p>Completee to add new images</p>
 
       <!DOCTYPE html>
       <form action="/upload" method="POST" enctype="multipart/form-data">
-          <input type="file" name="image" />
-          <button type="submit">Upload</button>
-      </form>
+      <div class="form group">
+          <input type="text" placeholder="Enter Painting Name" id="paintingName" />
+         <br><br>
 
+          <input type="text" placeholder="Enter painting dimensions" id="paintingName" />
+         <br><br>
+
+        <select id="painting-type">
+         <option disabled selected value> -- Select a painting type</option>
+         <option value="Figurative">Figurative</option>
+         <option value="Landscapes">Landscapes</option>
+         <option value="Still">Still Life</option>
+         <option value="Other">Other</option>
+        </select>
+        <br><br>
+          <input type="file" name="image" />
+          <button type="submit" class = "btn btn-dark">Upload</button>
+        <br><br>
+
+        
+      </div>
+
+
+        
+      </form>
+        </div>
+      </div>
     </div>
 <%- include("partials/footer.ejs") %>
 </body>

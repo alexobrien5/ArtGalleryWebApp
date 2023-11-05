@@ -1,6 +1,14 @@
 :root {
   --bs-body-bg: var(--bs-gray-100);
 }
+/* Custom typography imports */
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quattrocento+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
 
 /* Hide the dropdown menu in the collapsed navigation state */
 @media (max-width: 1279px) {
@@ -51,4 +59,90 @@
     .navbar-nav .nav-item.dropdown .dropdown-menu {
         display: none; /* Hide the dropdown menu in collapsed state */
     }
+}
+body {
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+}
+
+.navbar-nav a {
+   font: 16px/24px 'Cinzel', serif;
+}
+
+.navbar-brand {
+   font: 24px 'Cinzel', serif;
+}
+
+h1 {
+  font-size: 32px;
+  font-size: 2em;
+  margin: 0.67em 0;
+  font-family: 'Cinzel', serif;
+  font-weight: normal;
+  line-height: normal;
+}
+
+p {
+  font: 16px/24px 'Quattrocento Sans', sans-serif;
+}
+
+.upload-body{
+  padding: 20px 10px;
+  
+}
+
+contact-body {
+  padding: 20px 10px;
+}
+.section-heading {
+
+}
+
+/* footer will be fixed to bottom except on mobile */
+@media (max-width: 993px) {
+    .fixed-bottom {
+        position: static;
+    }
+}
+
+/* format image view to all squares */
+.image-container img {
+    width: 300px; /* Set the desired size for your square images */
+    height: 300px;
+    object-fit: cover; /* Crop to the center while maintaining aspect ratio */
+    margin: 5px; /* Add some spacing between images */
+    border-radius: 5%;
+}
+
+input[type=text], [type=email], textarea {
+  width: 100%; /* Full width */
+  padding: 12px; /* Some padding */ 
+  border: 1px solid #ccc; /* Gray border */
+  border-radius: 4px; /* Rounded borders */
+  box-sizing: border-box; /* Make sure that padding and width stays in place */
+  margin-top: 6px; /* Add a top margin */
+  margin-bottom: 16px; /* Bottom margin */
+  resize: vertical; /* Allow the user to vertically resize the textarea (not horizontally) */
+}
+
+/* Styles the submit button */
+input[type=submit] {
+  background-color: #ccc;
+  color: black;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* When moving the mouse over the submit button, changes color */
+input[type=submit]:hover {
+  background-color: #f2f2f2;
+}
+
+/* Adds a background color and padding around the form */
+.container {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
 }
