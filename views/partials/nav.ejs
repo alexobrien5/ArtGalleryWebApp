@@ -28,9 +28,19 @@
                         <a <% if (page_name === 'contact') { %>class="nav-link active" aria-current="page" <% } else { %>class="nav-link"<% } %> href="/contact">Contact</a>
                     </li>
 
-                    <li class="nav-item">
-                        <a <% if (page_name === 'upload') { %>class="nav-link active" aria-current="page" <% } else { %>class="nav-link"<% } %> href="/upload">Upload</a>
-                    </li>
+                    
+                    <% if (userID === 'admin') { %>
+                        <li class="nav-item">
+                            <a <% if (page_name === 'upload') { %>class="nav-link active" aria-current="page" <% } else { %>class="nav-link"<% } %> href="/upload">Upload</a>
+                        </li>
+                    <% } console.log(userID); %>
+
+                    <% if (userID === 'admin') { %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Logout</a>
+                        </li>
+                    <% } %>
+                            
                     <!-- <li class="nav-item">
                       <a class="nav-link disabled">Disabled</a>
                     </li> -->

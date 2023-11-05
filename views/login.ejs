@@ -1,0 +1,35 @@
+<%- include("partials/header.ejs") %>
+<body>
+
+                    <div class="container mt-5">
+                        <div class="row justify-content-center">
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        Administrator Login
+                                    </div>
+                                    <div class="card-body">
+                                        <form method="POST">
+                                            <div class="form-group">
+                                                <label for="username">Username:</label>
+                                                <input type="text" class="form-control" id="username" name="username" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="password">Password:</label>
+                                                <input type="password" class="form-control" id="password" name="password" required>
+                                            </div>
+                                            <div class="form-group mt-3">
+                                                <button type="submit" class="btn btn-primary w-100">Login</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<% if (typeof loginError != "undefined" && loginError) { %>
+        <h3 class="error">Wrong credentials!</h3>
+    <% } %>
+<%- include("partials/footer.ejs") %>
+</body>
+</html>
