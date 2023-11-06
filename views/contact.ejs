@@ -52,6 +52,16 @@
                      />
                 </div>
                </form>
+                <br>
+                    <% if (typeof mailError != "undefined" && mailError) { %>
+                    <div class="unsent">
+                        <h3 class="error">Error sending email. Please email dohnemus@gmail.com.</h3>
+                    </div>
+                    <% } else if (typeof mailError != "undefined" && !mailError) { %>
+                    <div class="sent">
+                       <h3 class="success">Email successfully sent. Please allow 2 business days for a follow-up. Thank you for your email!</h3>
+                    </div>
+                   <% } %>
             </div>
           </div>
         </div>

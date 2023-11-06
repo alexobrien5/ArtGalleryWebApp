@@ -136,15 +136,15 @@ app.post('/upload', (req, res) => {
 });
 
 app.post("/contact", async (req, res) => {
+    let page = "contact";
+    let user = req.session.user;
     const { name, email, subject, message } = req.body;
     try {
         mainMail(name, email, subject, message);
-        res.send("Message Successfully Sent!");
+        res.render("contact", { "mailError": false, "page_name": page, "userID": user });
     } catch (error) {
-        res.send("Message Could Not Be Sent");
+        res.render("contact", { "loginError": true, "page_name": page, "userID": user });
     }
-    let page = "contact";
-    res.render("contact", { "page_name": page });
 });
 
 //functions
@@ -169,17 +169,16 @@ async function mainMail(name, email, subject, message) {
     const transporter = nodeMail.createTransport({
         service: "gmail",
         auth: {
-            user: 'royalkwilliams@gmail.com',    //receipient's email 
-            pass: 'sxnk vlsu nvxo yjgf',         //receipient's generated password
+            user: 'dohnemusart@gmail.com',    //receipient's email 
+            pass: 'dyvk kqhj iwyk cbzp',         //receipient's generated password
         },
     });
     const mailOption = {
         from: email,
-        to: 'royalkwilliams@gmail.com',         //receipient's email
+        to: 'alobrien@csumb.edu',         //receipient's email
         subject: subject,
-        html: `You got a message from 
-    Email : ${email}
-    Name: ${name}
+        html: `You got a message from ${name}! <br><br>
+    Email : ${email} <br>
     Message: ${message}`,
     };
     try {
