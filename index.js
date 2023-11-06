@@ -139,12 +139,10 @@ app.post("/contact", async (req, res) => {
     const { name, email, subject, message } = req.body;
     try {
         mainMail(name, email, subject, message);
-        res.send("Message Successfully Sent!");
+        res.redirect("/");
     } catch (error) {
-        res.send("Message Could Not Be Sent");
+        res.redirect("/contact");
     }
-    let page = "contact";
-    res.render("contact", { "page_name": page });
 });
 
 //functions
@@ -169,13 +167,13 @@ async function mainMail(name, email, subject, message) {
     const transporter = nodeMail.createTransport({
         service: "gmail",
         auth: {
-            user: 'royalkwilliams@gmail.com',    //receipient's email 
-            pass: 'sxnk vlsu nvxo yjgf',         //receipient's generated password
+            user: 'dohnemuseartemails@gmail.com',    //receipient's email 
+            pass: 'nspj igeq lxhq dkmb',         //receipient's generated password
         },
     });
     const mailOption = {
         from: email,
-        to: 'royalkwilliams@gmail.com',         //receipient's email
+        to: 'dohnemuseartemails@gmail.com',         //receipient's email
         subject: subject,
         html: `You got a message from 
     Email : ${email}
