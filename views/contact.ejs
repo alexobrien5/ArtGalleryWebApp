@@ -53,17 +53,15 @@
                 </div>
                </form>
                 <br>
-               <div class="sent">
-                <p>
-                  *A successfully sent message will redirect you to the Welcome page after the Send button has been clicked.*
-                </p>
-               </div>
-                <br>
-               <div class="unsent">
-                <p>
-                  **You will be redirected back to this page if your message is not sent correctly through this form. If this occurs, please email me at dohnemuseartemails@gmail.com instead, thank you.**
-                </p>
-               </div>
+                    <% if (typeof mailError != "undefined" && mailError) { %>
+                    <div class="unsent">
+                        <h3 class="error">Error sending email. Please email dohnemus@gmail.com.</h3>
+                    </div>
+                    <% } else if (typeof mailError != "undefined" && !mailError) { %>
+                    <div class="sent">
+                       <h3 class="success">Email successfully sent. Please allow 2 business days for a follow-up. Thank you for your email!</h3>
+                    </div>
+                   <% } %>
             </div>
           </div>
         </div>
