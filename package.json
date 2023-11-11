@@ -10,6 +10,7 @@
     "express-mysql-session": "^3.0.0",
     "express-session": "^1.17.3",
     "express-validator": "^7.0.1",
+    "image-thumbnail": "^1.0.15",
     "jquery": "^3.7.1",
     "lightbox2": "^2.11.4",
     "mysql": "^2.18.1",

@@ -13,13 +13,13 @@
       <!DOCTYPE html>
       <form action="/upload" method="POST" enctype="multipart/form-data">
       <div class="form group">
-          <input type="text" placeholder="Enter Painting Name" id="paintingName" />
+          <input type="text" placeholder="Enter Painting Name" name="name" />
          <br><br>
 
-          <input type="text" placeholder="Enter painting dimensions" id="paintingName" />
+          <input type="text" placeholder="Enter painting dimensions"  name="dimensions" />
          <br><br>
 
-        <select id="painting-type">
+        <select name="type">
          <option disabled selected value> -- Select a painting type</option>
          <option value="Figurative">Figurative</option>
          <option value="Landscapes">Landscapes</option>
@@ -27,6 +27,12 @@
          <option value="Other">Other</option>
         </select>
         <br><br>
+        <input type="radio" name="available" value="Yes">
+        <label for="avail">Available</label>
+
+        <input type="radio" name="available" value="No">
+        <label for="not-avail">Unavailable</label>
+        <br>  <br>  
           <input type="file" name="image" />
           <button type="submit" class = "btn btn-dark">Upload</button>
         <br><br>
@@ -37,6 +43,8 @@
 
         
       </form>
+            <br>  
+
         </div>
       </div>
     </div>
