@@ -9,6 +9,7 @@ const bcrypt = require("bcrypt");
 const MySQLStore = require('express-mysql-session')(session);
 require("dotenv").config();
 const nodeMail = require("nodemailer");
+const imageThumbnail = require('image-thumbnail');
 const path = require("path");
 const port = 3000;
 
@@ -71,10 +72,16 @@ app.get("/contact", (req, res) => {
     res.render("contact", { "page_name": page, "userID": user });
 }); //contact
 
+app.get("/upload2", (req, res) => {
+    let user = req.session.user;
+    let page = "contact";
+    res.render("upload", { "page_name": page, "userID": user});
+  }); //upload
+
 app.get("/upload", isAuthenticated, (req, res) => {
     let user = req.session.user;
     let page = "upload";
-    res.render("upload", { "page_name": page, "userID": user });
+    res.render("upload", { "page_name": page, "userID": user});
 }); //upload
 
 app.get("/dbTest", async function(req, res) {
@@ -122,17 +129,41 @@ app.get('/logout', isAuthenticated, (req, res) => {
     res.redirect("/");
 })
 
-app.post('/upload', (req, res) => {
+app.post('/upload', async function (req, res) {
     // Get the file that was set to our field named "image"
     const { image } = req.files;
 
+    //Backend data declarations
+    let name = req.body.name;
+    let dimensions = req.body.dimensions;
+    let type = req.body.type;
+    let location = req.body.location;
+    let available = req.body.available;
+
+    //SQL Insert
+    let sql = "INSERT INTO painting (name, dimensions, media_type, location, availability) VALUES (?, ?, ?, ?, ? );"
+    let params = [name, dimensions, type, location, available];
+    let rows = await executeSQL(sql, params);
+  
     // If no image submitted, exit
     if (!image) return res.sendStatus(400);
 
     // Move the uploaded image to our upload folder
     image.mv(__dirname + '/upload/' + image.name);
-
+  
     res.sendStatus(200);
+  /*let user = req.session.user;
+  let page = "upload";
+  res.render("upload", { "page_name": page, "userID": user});*/
+
+  /* Potential Thumbnail Generator
+  try {
+      const thumbnail = await imageThumbnail('/upload/' + image.name);
+      console.log(thumbnail);
+  } catch (err) {
+      console.error(err);
+  }
+  */
 });
 
 app.post("/contact", async (req, res) => {
