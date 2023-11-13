@@ -161,13 +161,14 @@ app.post('/upload', async function(req, res) {
     // psuedocode
     // read last 3 digits of image file uploaded
     // based on that, if/then statements for creating the imgPath and thmPath paths
-    if (imgPath = '.jpg') {
-        const imgPath = __dirname + '/upload/img' + paintingId + '.jpg';
-        const thmPath = __dirname + '/upload/thm' + paintingId + '.jpg';
+    var imgFileUpload = image.name.split(".").pop();
+    if (imgFileUpload == 'jpg' || imgFileUpload == 'jpeg') {
+        imgPath = __dirname + '/upload/img' + paintingId + '.jpg';
+        thmPath = __dirname + '/upload/thm' + paintingId + '.jpg';
     }
-    if (imgPath = '.png') {
-        const imgPath = __dirname + '/upload/img' + paintingId + '.png';
-        const thmPath = __dirname + '/upload/thm' + paintingId + '.png';
+    else if (imgFileUpload == 'png') {
+        imgPath = __dirname + '/upload/img' + paintingId + '.png';
+        thmPath = __dirname + '/upload/thm' + paintingId + '.png';
     }
 
     //use async/await with image.mv
