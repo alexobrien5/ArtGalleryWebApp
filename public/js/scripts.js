@@ -21,3 +21,4 @@ if (jQuery) {
 } else {
     console.log('not loaded');
 }
+
