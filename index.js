@@ -1,5 +1,7 @@
 const express = require("express");
+const router = express.Router();
 const mysql = require("mysql");
+const sharp = require('sharp');
 const fileUpload = require('express-fileupload');
 const app = express();
 const pool = require("./dbPool");
@@ -9,7 +11,6 @@ const bcrypt = require("bcrypt");
 const MySQLStore = require('express-mysql-session')(session);
 require("dotenv").config();
 const nodeMail = require("nodemailer");
-const imageThumbnail = require('image-thumbnail');
 const path = require("path");
 const port = 3000;
 
@@ -75,13 +76,13 @@ app.get("/contact", (req, res) => {
 app.get("/upload2", (req, res) => {
     let user = req.session.user;
     let page = "contact";
-    res.render("upload", { "page_name": page, "userID": user});
-  }); //upload
+    res.render("upload", { "page_name": page, "userID": user });
+}); //upload
 
-app.get("/upload", isAuthenticated, (req, res) => {
+app.get("/upload", (req, res) => {
     let user = req.session.user;
     let page = "upload";
-    res.render("upload", { "page_name": page, "userID": user});
+    res.render("upload", { "page_name": page, "userID": user });
 }); //upload
 
 app.get("/dbTest", async function(req, res) {
@@ -129,7 +130,7 @@ app.get('/logout', isAuthenticated, (req, res) => {
     res.redirect("/");
 })
 
-app.post('/upload', async function (req, res) {
+app.post('/upload', async function(req, res) {
     // Get the file that was set to our field named "image"
     const { image } = req.files;
 
@@ -144,26 +145,61 @@ app.post('/upload', async function (req, res) {
     let sql = "INSERT INTO painting (name, dimensions, media_type, location, availability) VALUES (?, ?, ?, ?, ? );"
     let params = [name, dimensions, type, location, available];
     let rows = await executeSQL(sql, params);
-  
+
     // If no image submitted, exit
     if (!image) return res.sendStatus(400);
 
-    // Move the uploaded image to our upload folder
-    image.mv(__dirname + '/upload/' + image.name);
-  
-    res.sendStatus(200);
-  /*let user = req.session.user;
-  let page = "upload";
-  res.render("upload", { "page_name": page, "userID": user});*/
+    //SQL Select
+    let sql2 = "SELECT id FROM painting ORDER BY id DESC limit 1";
+    let rows2 = await executeSQL(sql2);
+    let paintingId = rows2[0].id;
+    console.log(rows2);
+    console.log('the painting id is ' + paintingId);
 
-  /* Potential Thumbnail Generator
-  try {
-      const thumbnail = await imageThumbnail('/upload/' + image.name);
-      console.log(thumbnail);
-  } catch (err) {
-      console.error(err);
-  }
-  */
+    // Move the uploaded image to our upload folder
+    // add logic for choosing file type based on the image.name.
+    // psuedocode
+    // read last 3 digits of image file uploaded
+    // based on that, if/then statements for creating the imgPath and thmPath paths
+    if (imgPath = '.jpg') {
+        const imgPath = __dirname + '/upload/img' + paintingId + '.jpg';
+        const thmPath = __dirname + '/upload/thm' + paintingId + '.jpg';
+    }
+    if (imgPath = '.png') {
+        const imgPath = __dirname + '/upload/img' + paintingId + '.png';
+        const thmPath = __dirname + '/upload/thm' + paintingId + '.png';
+    }
+
+    //use async/await with image.mv
+    try {
+        await image.mv(imgPath);
+        console.log(imgPath);
+    } catch (err) {
+        console.error(err);
+        return res.sendStatus(500); // handle error
+    }
+
+    // Use sharp to generate thumbnail
+    try {
+        sharp(imgPath).resize(500, 500).withMetadata().toFile(thmPath, (err, resizeImage) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(resizeImage);
+            }
+        })
+        return res.status(201).json({
+            message: 'File uploaded successfully'
+        });
+    } catch (error) {
+        console.error(error);
+    };
+
+    // res.sendStatus(200);
+    let user = req.session.user;
+    let page = "upload";
+    res.render("upload", { "page_name": page, "userID": user });
+
 });
 
 app.post("/contact", async (req, res) => {
@@ -196,6 +232,7 @@ function isAuthenticated(req, res, next) {
     }
 } //isAuthenticated
 
+module.exports = router;
 async function mainMail(name, email, subject, message) {
     const transporter = nodeMail.createTransport({
         service: "gmail",
@@ -218,8 +255,8 @@ async function mainMail(name, email, subject, message) {
     } catch (error) {
         return Promise.reject(error);
     }
-} //end of mainMail function
-
+}
+//end of mainMail function
 
 //start server
 app.listen(3000, () => {
