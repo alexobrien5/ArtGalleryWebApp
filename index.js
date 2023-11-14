@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const mysql = require("mysql");
 const sharp = require('sharp');
 const fileUpload = require('express-fileupload');
 const app = express();
@@ -140,11 +139,13 @@ app.post('/upload', async function(req, res) {
     let type = req.body.type;
     let location = req.body.location;
     let available = req.body.available;
+    let img_path = 'temp';
+    let thm_path = 'temp';
 
     //SQL Insert
-    let sql = "INSERT INTO painting (name, dimensions, media_type, location, availability) VALUES (?, ?, ?, ?, ? );"
-    let params = [name, dimensions, type, location, available];
-    let rows = await executeSQL(sql, params);
+    let sql = "INSERT INTO painting (name, dimensions, media_type, location, availability, img_path, thm_path) VALUES (?, ?, ?, ?, ?, ?, ?);"
+    let params = [name, dimensions, type, location, available, img_path, thm_path];
+    await executeSQL(sql, params);
 
     // If no image submitted, exit
     if (!image) return res.sendStatus(400);
@@ -163,18 +164,23 @@ app.post('/upload', async function(req, res) {
     // based on that, if/then statements for creating the imgPath and thmPath paths
     var imgFileUpload = image.name.split(".").pop();
     if (imgFileUpload == 'jpg' || imgFileUpload == 'jpeg') {
-        imgPath = __dirname + '/upload/img' + paintingId + '.jpg';
-        thmPath = __dirname + '/upload/thm' + paintingId + '.jpg';
+        img_path = __dirname + '/upload/img' + paintingId + '.jpg';
+        thm_path = __dirname + '/upload/thm' + paintingId + '.jpg';
     }
     else if (imgFileUpload == 'png') {
-        imgPath = __dirname + '/upload/img' + paintingId + '.png';
-        thmPath = __dirname + '/upload/thm' + paintingId + '.png';
+        img_path = __dirname + '/upload/img' + paintingId + '.png';
+        thm_path = __dirname + '/upload/thm' + paintingId + '.png';
     }
+
+    //SQL Update for filenames
+    let sql3 = "UPDATE painting SET img_path = ?, thm_path = ? WHERE id = ?";
+    let params3 = [img_path, thm_path, paintingId];
+    await executeSQL(sql3, params3);
 
     //use async/await with image.mv
     try {
-        await image.mv(imgPath);
-        console.log(imgPath);
+        await image.mv(img_path);
+        console.log(img_path);
     } catch (err) {
         console.error(err);
         return res.sendStatus(500); // handle error
@@ -182,7 +188,7 @@ app.post('/upload', async function(req, res) {
 
     // Use sharp to generate thumbnail
     try {
-        sharp(imgPath).resize(500, 500).withMetadata().toFile(thmPath, (err, resizeImage) => {
+        sharp(img_path).resize(500, 500).withMetadata().toFile(thm_path, (err, resizeImage) => {
             if (err) {
                 console.log(err);
             } else {
