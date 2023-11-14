@@ -5,165 +5,40 @@
         <div class="image-container">
             <h1>Figurative</h1>
             <div class="section" id="figurative">
-                <a href="/img/portfolio/img1.jpg" data-lightbox="figurative">
-                    <img
-                        src="/img/portfolio/img1.jpg"
-                        loading="lazy"
-                    />
-                </a>
-
-                <a href="/img/portfolio/img2.jpg" data-lightbox="figurative">
-                    <img
-                        src="/img/portfolio/img2.jpg"
-                        loading="lazy"
-                    />
-                </a>
-                
-                <a href="/img/portfolio/img3.jpg" data-lightbox="figurative">
-                    <img
-                        src="/img/portfolio/img3.jpg"
-                        loading="lazy"
-                    />
-                </a>
-
-                <a href="/img/portfolio/img4.jpg" data-lightbox="figurative">
-                    <img
-                        src="/img/portfolio/img4.jpg"
-                        loading="lazy"
-                    />
-                </a>
-
-                <a href="/img/portfolio/img5.jpg" data-lightbox="figurative">
-                    <img
-                        src="/img/portfolio/img5.jpg"
-                        loading="lazy"
-                    />
-                </a>
-
-                <a href="/img/portfolio/img6.jpg" data-lightbox="figurative">
-                    <img
-                        src="/img/portfolio/img6.jpg"
-                        loading="lazy"
-                    />
-                </a>
+                <% figurative.forEach(figurative => { %>
+                    <a href="<%= figurative.img_path %>" data-lightbox="figurative" data-title="<%= figurative.name %>">
+                        <img src="<%= figurative.thm_path %>" alt="<%= figurative.name %>">
+                    </a>
+                <% }); %>
             </div>
 
-            
-            <h1>Scapes</h1>
-            <div class="section" id="scapes">
-                <a href="/img/portfolio/img7.jpg" data-lightbox="scapes">
-                    <img
-                        src="/img/portfolio/img7.jpg"
-                        loading="lazy"
-                    />
-                </a>
-
-                <a href="/img/portfolio/img8.jpg" data-lightbox="scapes">
-                    <img
-                        src="/img/portfolio/img8.jpg"
-                        loading="lazy"
-                    />
-                </a>
-
-                <a href="/img/portfolio/img9.jpg" data-lightbox="scapes">
-                    <img
-                        src="/img/portfolio/img9.jpg"
-                        loading="lazy"
-                    />
-                </a>
-
-                <a href="/img/portfolio/img10.jpg" data-lightbox="scapes">
-                    <img
-                        src="/img/portfolio/img10.jpg"
-                        loading="lazy"
-                    />
-                </a>
-
-                <a href="/img/portfolio/img11.jpg" data-lightbox="scapes">
-                    <img
-                        src="/img/portfolio/img11.jpg"
-                        loading="lazy"
-                    />
-                </a>
-
-                <a href="/img/portfolio/img12.jpg" data-lightbox="scapes">
-                    <img
-                        src="/img/portfolio/img12.jpg"
-                        loading="lazy"
-                    />
-                </a>
+            <h1>Landscapes</h1>
+            <div class="section" id="landscapes">
+                <% landscapes.forEach(landscapes => { %>
+                    <a href="<%= landscapes.img_path %>" data-lightbox="landscapes" data-title="<%= landscapes.name %>">
+                        <img src="<%= landscapes.thm_path %>" alt="<%= landscapes.name %>">
+                    </a>
+                <% }); %>
             </div>
 
-            
             <h1>Still Life</h1>
-            <div class="section" id="still_life">
-                <a href="/img/portfolio/img13.jpg" data-lightbox="still_life">
-                    <img
-                        src="/img/portfolio/img13.jpg"
-                        loading="lazy"
-                    />
-                </a>
-
-                <a href="/img/portfolio/img14.jpg" data-lightbox="still_life">
-                    <img
-                        src="/img/portfolio/img14.jpg"
-                        loading="lazy"
-                    />
-                </a>
-
-                <a href="/img/portfolio/img15.jpg" data-lightbox="still_life">
-                    <img
-                        src="/img/portfolio/img15.jpg"
-                        loading="lazy"
-                    />
-                </a>
-
-                <a href="/img/portfolio/img16.jpg" data-lightbox="still_life">
-                    <img
-                        src="/img/portfolio/img16.jpg"
-                        loading="lazy"
-                    />
-                </a>
-
-                <a href="/img/portfolio/img17.jpg" data-lightbox="still_life">
-                    <img
-                        src="/img/portfolio/img17.jpg"
-                        loading="lazy"
-                    />
-                </a>
-
-                <a href="/img/portfolio/img18.jpg" data-lightbox="still_life">
-                    <img
-                        src="/img/portfolio/img18.jpg"
-                        loading="lazy"
-                    />
-                </a>
+            <div class="section" id="still">
+                <% still.forEach(still => { %>
+                    <a href="<%= still.img_path %>" data-lightbox="still" data-title="<%= still.name %>">
+                        <img src="<%= still.thm_path %>" alt="<%= still.name %>">
+                    </a>
+                <% }); %>
             </div>
 
-
-            <h1>Other Works</h1>
-            <div class="section" id="other_works">
-                <a href="/img/portfolio/img19.jpg" data-lightbox="other_works">
-                    <img
-                        src="/img/portfolio/img19.jpg"
-                        loading="lazy"
-                    />
-                </a>
-
-                <a href="/img/portfolio/img20.jpg" data-lightbox="other_works">
-                    <img
-                        src="/img/portfolio/img20.jpg"
-                        loading="lazy"
-                    />
-                </a>
-
-                <a href="/img/portfolio/img21.jpg" data-lightbox="other_works">
-                    <img
-                        src="/img/portfolio/img21.jpg"
-                        loading="lazy"
-                    />
-                </a>
+            <h1>Other</h1>
+            <div class="section" id="other">
+                <% other.forEach(other => { %>
+                    <a href="<%= other.img_path %>" data-lightbox="other" data-title="<%= other.name %>">
+                        <img src="<%= other.thm_path %>" alt="<%= other.name %>">
+                    </a>
+                <% }); %>
             </div>
+
             
         </div>
     <%- include("partials/footer.ejs") %>
