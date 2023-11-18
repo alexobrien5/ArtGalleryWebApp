@@ -2,18 +2,19 @@
     <body>
         <%- include("partials/nav.ejs") %>
 
-        <div class="image-container">
-            <h1>Figurative</h1>
-            <div class="section" id="figurative">
+        <div class="container portfolio-body">
+            <h1 class="text-center">Diane's Portfolio</h1>
+            <div class="section section-padding" id="figurative">
+                <h1>Figurative</h1>
                 <% figurative.forEach(figurative => { %>
                     <a href="<%= figurative.img_path %>" data-lightbox="figurative" data-title="<%= figurative.name %>">
                         <img src="<%= figurative.thm_path %>" alt="<%= figurative.name %>">
                     </a>
                 <% }); %>
             </div>
-
-            <h1>Landscapes</h1>
-            <div class="section" id="landscapes">
+                    
+            <div class="section section-padding" id="landscapes">
+                <h1>Landscapes</h1>
                 <% landscapes.forEach(landscapes => { %>
                     <a href="<%= landscapes.img_path %>" data-lightbox="landscapes" data-title="<%= landscapes.name %>">
                         <img src="<%= landscapes.thm_path %>" alt="<%= landscapes.name %>">
@@ -21,8 +22,8 @@
                 <% }); %>
             </div>
 
-            <h1>Still Life</h1>
-            <div class="section" id="still">
+            <div class="section section-padding" id="still">
+                <h1>Still Life</h1>
                 <% still.forEach(still => { %>
                     <a href="<%= still.img_path %>" data-lightbox="still" data-title="<%= still.name %>">
                         <img src="<%= still.thm_path %>" alt="<%= still.name %>">
@@ -30,8 +31,8 @@
                 <% }); %>
             </div>
 
-            <h1>Other</h1>
-            <div class="section" id="other">
+            <div class="section section-padding" id="other">
+                <h1>Other</h1>
                 <% other.forEach(other => { %>
                     <a href="<%= other.img_path %>" data-lightbox="other" data-title="<%= other.name %>">
                         <img src="<%= other.thm_path %>" alt="<%= other.name %>">

@@ -10,6 +10,79 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Poppins:wght@300&family=Roboto&display=swap" rel="stylesheet">
+
+/*----------------------------------------
+    BODY
+----------------------------------------*/
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Monsterrat', sans-serif;
+}
+
+h1 {
+  font-size: 32px;
+  font-size: 2em;
+  margin: 0.67em 0;
+  font-family: 'Monsteratt', serif;
+  font-weight: normal;
+  line-height: normal;
+}
+
+p {
+  font: 16px/24px 'Poppins', sans-serif;
+}
+
+.upload-body{
+  padding: 20px 10px;
+
+}
+
+contact-body {
+  padding: 20px 10px;
+}
+.section-heading {
+
+}
+
+/*----------------------------------------
+    NAV
+----------------------------------------*/
+
+.navbar-nav a {
+   font-family: 'Monsterrat', serif;
+}
+
+.navbar-brand a {
+   font-family: 'Monsterrat', serif;
+}
+
+.navbar-expand-lg {
+    background-color: white;
+}
+
+/* sticky rules */
+.sticky-wrapper.is-sticky .navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #ccc;
+}
+
+.sticky-wrapper {
+    top: 0;
+    right: 0;
+    left: 0;
+}
+
+
+
 /* Hide the dropdown menu in the collapsed navigation state */
 @media (max-width: 1279px) {
     .navbar-nav .nav-item.dropdown .dropdown-menu {
@@ -60,59 +133,32 @@
         display: none; /* Hide the dropdown menu in collapsed state */
     }
 }
-body {
-  -webkit-font-smoothing: antialiased;
-  -webkit-text-size-adjust: 100%;
+
+/*---------------------------------------
+  SECTION               
+-----------------------------------------*/
+.section-padding {
+    padding-top: 50px;
 }
 
-.navbar-nav a {
-   font: 16px/24px 'Cinzel', serif;
-}
 
-.navbar-brand {
-   font: 24px 'Cinzel', serif;
-}
 
-h1 {
-  font-size: 32px;
-  font-size: 2em;
-  margin: 0.67em 0;
-  font-family: 'Cinzel', serif;
-  font-weight: normal;
-  line-height: normal;
-}
-
-p {
-  font: 16px/24px 'Quattrocento Sans', sans-serif;
-}
-
-.upload-body{
-  padding: 20px 10px;
-  
-}
-
-contact-body {
-  padding: 20px 10px;
-}
-.section-heading {
-
-}
-
-/* footer will be fixed to bottom except on mobile */
-@media (max-width: 993px) {
-    .fixed-bottom {
-        position: static;
-    }
-}
+/*----------------------------------------
+    PORTFOLIO
+----------------------------------------*/
 
 /* format image view to all squares */
-.image-container img {
+.portfolio-body img {
     width: 300px; /* Set the desired size for your square images */
     height: 300px;
     object-fit: cover; /* Crop to the center while maintaining aspect ratio */
     margin: 5px; /* Add some spacing between images */
     border-radius: 5%;
 }
+
+/*----------------------------------------
+    CONTACT
+----------------------------------------*/
 
 input[type=text], [type=email], textarea {
   width: 100%; /* Full width */
@@ -141,11 +187,11 @@ input[type=submit]:hover {
 }
 
 /* Adds a background color and padding around the form */
-.container {
+/* .container {
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px;
-}
+} */
 
 .sent {
   color: green;
@@ -154,3 +200,15 @@ input[type=submit]:hover {
 .unsent {
   color: red;
 }
+
+/*----------------------------------------
+    FOOTER
+----------------------------------------*/
+
+/* footer will be fixed to bottom except on mobile */
+@media (max-width: 993px) {
+    .fixed-bottom {
+        position: static;
+    }
+}
+
