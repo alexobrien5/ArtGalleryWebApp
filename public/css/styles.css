@@ -1,18 +1,6 @@
 :root {
   --bs-body-bg: var(--bs-gray-100);
 }
-/* Custom typography imports */
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Quattrocento+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Poppins:wght@300&family=Roboto&display=swap" rel="stylesheet">
 
 /*----------------------------------------
     BODY
@@ -23,20 +11,20 @@ body {
     -webkit-text-size-adjust: 100%;
     margin: 0;
     padding: 0;
-    font-family: 'Monsterrat', sans-serif;
+    font-family: 'Roboto Slab', serif;
 }
 
-h1 {
-  font-size: 32px;
-  font-size: 2em;
-  margin: 0.67em 0;
-  font-family: 'Monsteratt', serif;
-  font-weight: normal;
-  line-height: normal;
+h1, h2, h3, h4, h5, h6 {
+    font-size: 32px;
+    font-size: 2em;
+    margin: 0.67em 0;
+    font-family: 'Cinzel', serif;
+    font-weight: normal;
+    line-height: normal;
 }
 
-p {
-  font: 16px/24px 'Poppins', sans-serif;
+.quotes {
+    font-family: 'Ephesis', cursive;
 }
 
 .upload-body{
@@ -55,12 +43,9 @@ contact-body {
     NAV
 ----------------------------------------*/
 
-.navbar-nav a {
-   font-family: 'Monsterrat', serif;
-}
-
-.navbar-brand a {
-   font-family: 'Monsterrat', serif;
+.navbar-nav a, .navbar-brand {
+    font-family: 'Cinzel', serif;
+    font-weight: 500;
 }
 
 .navbar-expand-lg {
@@ -149,8 +134,8 @@ contact-body {
 
 /* format image view to all squares */
 .portfolio-body img {
-    width: 300px; /* Set the desired size for your square images */
-    height: 300px;
+    width: 200px; /* Set the desired size for your square images */
+    height: 200px;
     object-fit: cover; /* Crop to the center while maintaining aspect ratio */
     margin: 5px; /* Add some spacing between images */
     border-radius: 5%;
@@ -212,3 +197,12 @@ input[type=submit]:hover {
     }
 }
 
+.footer {
+    background-color: white;
+}
+
+.socials img {
+    width: 20px; /* Set the desired size for your square images */
+    height: 20px;
+    margin: 5px;
+}
