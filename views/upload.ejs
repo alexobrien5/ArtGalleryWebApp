@@ -8,7 +8,7 @@
           <h1 class= "section-heading">
           Upload
           </h1>
-          <p>Completee to add new images</p>
+          <p>Complete to add new images</p>
 
       <!DOCTYPE html>
       <form action="/upload" method="POST" enctype="multipart/form-data">
@@ -39,11 +39,18 @@
 
         
       </div>
-
-
         
       </form>
             <br>  
+            <% if (typeof mailError!= "undefined" && mailError) { %>
+                <div class="unsent">
+                    <h3 class="error">Image failed to upload</h3>
+                </div>
+                <% } else if (typeof mailError != "undefined" && !mailError) { %>
+                <div class="sent">
+                   <h3 class="success"> Image was successfully Uploaded!</h3>
+                </div>
+               <% } %>
 
         </div>
       </div>

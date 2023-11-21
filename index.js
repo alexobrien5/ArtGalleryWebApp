@@ -13,6 +13,7 @@ const nodeMail = require("nodemailer");
 const path = require("path");
 const port = 3000;
 
+
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 //line below allows express to parse values sent in form
@@ -60,10 +61,23 @@ app.get("/about", (req, res) => {
     res.render("about", { "page_name": page, "userID": user });
 }); //about
 
-app.get("/portfolio", (req, res) => {
+app.get("/portfolio", async (req, res) => {
     let user = req.session.user;
     let page = "portfolio";
-    res.render("portfolio", { "page_name": page, "userID": user });
+    let sql1 = `SELECT * FROM painting WHERE media_type = 'figurative'`;
+    let rows1 = await executeSQL(sql1);
+
+    let sql2 = `SELECT * FROM painting WHERE media_type = 'landscapes'`;
+    let rows2 = await executeSQL(sql2);
+
+    let sql3 = `SELECT * FROM painting WHERE media_type = 'still'`;
+    let rows3 = await executeSQL(sql3);
+
+    let sql4 = `SELECT * FROM painting WHERE media_type = 'other'`;
+    let rows4 = await executeSQL(sql4);
+    
+    res.render("portfolio", { "page_name": page, "userID": user, "figurative": rows1,
+                            "landscapes": rows2, "still": rows3, "other": rows4 });
 }); //portfolio
 
 app.get("/contact", (req, res) => {
@@ -72,11 +86,8 @@ app.get("/contact", (req, res) => {
     res.render("contact", { "page_name": page, "userID": user });
 }); //contact
 
-app.get("/upload2", (req, res) => {
-    let user = req.session.user;
-    let page = "contact";
-    res.render("upload", { "page_name": page, "userID": user });
-}); //upload
+// Serve static files (images)
+app.use('/upload', express.static(path.join(__dirname, 'upload')));
 
 app.get("/upload", (req, res) => {
     let user = req.session.user;
@@ -139,6 +150,8 @@ app.post('/upload', async function(req, res) {
     let type = req.body.type;
     let location = req.body.location;
     let available = req.body.available;
+  
+    // temp values until the image file type is checked, required for not null values
     let img_path = 'temp';
     let thm_path = 'temp';
 
@@ -150,12 +163,37 @@ app.post('/upload', async function(req, res) {
     // If no image submitted, exit
     if (!image) return res.sendStatus(400);
 
+    // If does not have image mime type prevent from uploading
+    if (!(/^image/.test(image.mimetype)))
+    {
+      console.log("not image");   
+      return res.sendStatus(400)
+    }
+       
+  //  var currentMime = image.mimetype.split("/").pop();
+    //console.log(image.mimetype);
+
+  
+    if (imgFileUpload == 'jpg' || imgFileUpload == 'jpeg') {
+      img_path = __dirname + '/upload/img' + paintingId + '.jpg';
+      thm_path = __dirname + '/upload/thm' + paintingId + '.jpg';
+      img_short_path = '/upload/img' + paintingId + '.jpg';
+      thm_short_path = '/upload/thm' + paintingId + '.jpg';
+  }
+  else if (imgFileUpload == 'png') {
+      img_path = __dirname + '/upload/img' + paintingId + '.png';
+      thm_path = __dirname + '/upload/thm' + paintingId + '.png';
+      img_short_path = '/upload/img' + paintingId + '.png';
+      thm_short_path = '/upload/thm' + paintingId + '.png';
+  }
+
+  
     //SQL Select
     let sql2 = "SELECT id FROM painting ORDER BY id DESC limit 1";
     let rows2 = await executeSQL(sql2);
     let paintingId = rows2[0].id;
-    console.log(rows2);
-    console.log('the painting id is ' + paintingId);
+   // console.log(rows2);
+  //  console.log('the painting id is ' + paintingId);
 
     // Move the uploaded image to our upload folder
     // add logic for choosing file type based on the image.name.
@@ -166,23 +204,27 @@ app.post('/upload', async function(req, res) {
     if (imgFileUpload == 'jpg' || imgFileUpload == 'jpeg') {
         img_path = __dirname + '/upload/img' + paintingId + '.jpg';
         thm_path = __dirname + '/upload/thm' + paintingId + '.jpg';
+        img_short_path = '/upload/img' + paintingId + '.jpg';
+        thm_short_path = '/upload/thm' + paintingId + '.jpg';
     }
     else if (imgFileUpload == 'png') {
         img_path = __dirname + '/upload/img' + paintingId + '.png';
         thm_path = __dirname + '/upload/thm' + paintingId + '.png';
+        img_short_path = '/upload/img' + paintingId + '.png';
+        thm_short_path = '/upload/thm' + paintingId + '.png';
     }
 
     //SQL Update for filenames
     let sql3 = "UPDATE painting SET img_path = ?, thm_path = ? WHERE id = ?";
-    let params3 = [img_path, thm_path, paintingId];
+    let params3 = [img_short_path, thm_short_path, paintingId];
     await executeSQL(sql3, params3);
 
     //use async/await with image.mv
     try {
         await image.mv(img_path);
-        console.log(img_path);
+       // console.log(img_path);
     } catch (err) {
-        console.error(err);
+       // console.error(err);
         return res.sendStatus(500); // handle error
     }
 
@@ -190,9 +232,9 @@ app.post('/upload', async function(req, res) {
     try {
         sharp(img_path).resize(500, 500).withMetadata().toFile(thm_path, (err, resizeImage) => {
             if (err) {
-                console.log(err);
+                //console.log(err);
             } else {
-                console.log(resizeImage);
+               // console.log(resizeImage);
             }
         })
         return res.status(201).json({
@@ -202,7 +244,6 @@ app.post('/upload', async function(req, res) {
         console.error(error);
     };
 
-    // res.sendStatus(200);
     let user = req.session.user;
     let page = "upload";
     res.render("upload", { "page_name": page, "userID": user });

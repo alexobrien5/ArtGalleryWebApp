@@ -1,0 +1,120 @@
+# Name: Richard Rivera, Zachary Hester, Crystal Diaz, Kevin Swei
+# Team: 6
+# Date: 09/13/22
+# Title: Client.py
+# Description: The program sends 10 pings to the server program,
+# help track the RTTs of each ping. Tracks the number of lost packets
+# and calculates the min, max, and average RTTs. Also calculate
+# estimatedRTT, devRTT, and timeout interval for the sequence
+import time
+from socket import *
+from decimal import Decimal
+
+#Server will be in H2 in topology, so we use 10.0.0.2
+serverName = '10.0.0.2'
+serverPort = 12000
+
+# Variables for the RTT and packets
+minRTT = 1000.0
+maxRTT = 0.0
+sumRTT = 0.0
+
+# Variable for calculations
+estRTT = 0.0
+devRTT = 0.0
+
+
+#time tracking variables
+startTime=  0.0
+returnTime= 0.0
+rttTracker= 0.0
+pingCounter = 0.0
+pongCounter = 10.0
+lossCounter = 0.0
+
+# Declare constants
+A = .125
+B = .25
+
+#Crystal and Zack create the pinging capability and record times 
+#Also deal with the time out and error catching caused by lost packets
+
+i=1
+
+while i <11:
+    try:
+        # Create a UDP socket
+        clientSocket = socket(AF_INET, SOCK_DGRAM)  
+
+        # Sends message to server and records time
+        message = "Ping" + str(i)
+        clientSocket.sendto(message.encode(), (serverName, serverPort))
+        startTime = time.time()
+        
+        #Set Timeout to 1 second
+        clientSocket.settimeout(1)
+
+        # Receives message from server and records time
+        modifiedMessage, serverAddress = clientSocket.recvfrom(2048)
+        returnTime = time.time()
+
+        #Round-Trip Time Calculator
+        #Value is stored in seconds, x1000 for milliseconds
+        rttTracker = (returnTime - startTime) * 1000
+
+        #Richard create the formulas to calcuate the RTT outputs
+        #Also create the output mechanisms themselves to display the outputs.
+        
+        # Sum the return RTT message and update min/max of RTT
+        sumRTT = sumRTT + rttTracker
+        if (minRTT > rttTracker):
+            minRTT = rttTracker
+        if (maxRTT < rttTracker):
+            maxRTT = rttTracker
+ 
+        # Pong counter
+        pongCounter = pongCounter + 1
+
+        # Calculate the est./dev RTT
+        if (i == 1):
+           estRTT = rttTracker
+           devRTT = estRTT/2
+        else:
+          estRTT = ((1-A) * estRTT) + (A * rttTracker)
+          devRTT = ((1-B) * devRTT) + (B * abs(rttTracker - estRTT))
+
+
+        #Output messages
+        print("\nMesg sent:", message)
+        print("Mesg rcvd:", modifiedMessage.decode())
+        print("Start time:", "%.12e" % Decimal(startTime))
+        print("Return time:", "%.12e" % Decimal(returnTime))
+        print("PONG", i, "RTT: ", rttTracker, "ms")
+        clientSocket.close()
+        i = i+1
+
+    #Except block in case of timeout
+    except timeout:
+        print("\nNo Mesg rcvd")
+        print("PONG",(i),"Request Timed out\n")
+        clientSocket.close()
+        lossCounter += 1
+        i = i+1
+
+# Calculate avg RTT of all packets successfully recieved
+avgRTT = (sumRTT / (pongCounter - 10))
+
+# Calculate percent lost on packets
+percent_pckt_loss = (lossCounter/10) * 100
+
+# Calculate timeout interval
+timeINT = estRTT + (4 * devRTT)
+
+# Print final stats
+print("\nMin RTT:\t\t" + str(minRTT) + " ms")
+print("Max RTT:\t\t" + str(maxRTT) + " ms")
+print("Avg RTT:\t\t" + str(avgRTT) + " ms")
+print("Packet Loss:\t\t" + str(percent_pckt_loss) + "%")
+print("Estimated RTT:\t\t" + str(estRTT) + " ms")
+print("Dev RTT:\t\t" + str(devRTT) + " ms")
+print("Timeout Interval:\t" + str(timeINT) + " ms")
