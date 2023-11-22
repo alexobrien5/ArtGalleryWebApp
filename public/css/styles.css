@@ -130,15 +130,15 @@ contact-body {
 /*---------------------------------------
   WELCOME PAGE HYPERLINKS                
 -----------------------------------------*/
-.welcomelinks a {
-    color: black;
+#welcomelinks a {
+    color: goldenrod;
     font-style: italic;
     font-size: 16px;
     text-decoration: none;
 }
 
-.welcomelinks a:hover {
-    color: darkblue;
+#welcomelinks a:hover {
+    color: darkgoldenrod;
     font-style: normal;
     font-size: 16px;
     text-decoration: underline;
