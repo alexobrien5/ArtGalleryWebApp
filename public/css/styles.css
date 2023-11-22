@@ -127,7 +127,23 @@ contact-body {
     text-align: center;
 }
 
+/*---------------------------------------
+  WELCOME PAGE HYPERLINKS                
+-----------------------------------------*/
+.welcomelinks a {
+    color: black;
+    font-style: italic;
+    font-size: 16px;
+    text-decoration: none;
+}
 
+.welcomelinks a:hover {
+    color: darkblue;
+    font-style: normal;
+    font-size: 16px;
+    text-decoration: underline;
+
+}
 
 /*----------------------------------------
     PORTFOLIO
