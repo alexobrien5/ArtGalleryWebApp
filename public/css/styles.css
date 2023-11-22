@@ -124,6 +124,7 @@ contact-body {
 -----------------------------------------*/
 .section-padding {
     padding-top: 50px;
+    text-align: center;
 }
 
 
@@ -134,11 +135,19 @@ contact-body {
 
 /* format image view to all squares */
 .portfolio-body img {
-    width: 200px; /* Set the desired size for your square images */
-    height: 200px;
+    width: 150px; /* Set the desired size for your square images */
+    height: 150px;
     object-fit: cover; /* Crop to the center while maintaining aspect ratio */
     margin: 5px; /* Add some spacing between images */
     border-radius: 5%;
+}
+
+.classification {
+    text-align: left;
+}
+
+.section a {
+    text-decoration: none; /* Remove blue dashes from in between pictures */
 }
 
 /*----------------------------------------
