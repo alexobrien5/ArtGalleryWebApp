@@ -75,9 +75,11 @@ app.get("/portfolio", async (req, res) => {
 
     let sql4 = `SELECT * FROM painting WHERE media_type = 'other'`;
     let rows4 = await executeSQL(sql4);
-    
-    res.render("portfolio", { "page_name": page, "userID": user, "figurative": rows1,
-                            "landscapes": rows2, "still": rows3, "other": rows4 });
+
+    res.render("portfolio", {
+        "page_name": page, "userID": user, "figurative": rows1,
+        "landscapes": rows2, "still": rows3, "other": rows4
+    });
 }); //portfolio
 
 app.get("/contact", (req, res) => {
@@ -122,7 +124,7 @@ app.post("/login", async (req, res) => {
 
     let passwordMatch = await bcrypt.compare(password, hashedPwd);
 
-    console.log(passwordMatch);
+    // console.log(passwordMatch);
 
     if (passwordMatch) {
         //initialized session variable if password matched
@@ -150,7 +152,7 @@ app.post('/upload', async function(req, res) {
     let type = req.body.type;
     let location = req.body.location;
     let available = req.body.available;
-  
+
     // temp values until the image file type is checked, required for not null values
     let img_path = 'temp';
     let thm_path = 'temp';
@@ -164,36 +166,35 @@ app.post('/upload', async function(req, res) {
     if (!image) return res.sendStatus(400);
 
     // If does not have image mime type prevent from uploading
-    if (!(/^image/.test(image.mimetype)))
-    {
-      console.log("not image");   
-      return res.sendStatus(400)
+    if (!(/^image/.test(image.mimetype))) {
+        console.log("not image");
+        return res.sendStatus(400)
     }
-       
-  //  var currentMime = image.mimetype.split("/").pop();
+
+    //  var currentMime = image.mimetype.split("/").pop();
     //console.log(image.mimetype);
 
-  
-    if (imgFileUpload == 'jpg' || imgFileUpload == 'jpeg') {
-      img_path = __dirname + '/upload/img' + paintingId + '.jpg';
-      thm_path = __dirname + '/upload/thm' + paintingId + '.jpg';
-      img_short_path = '/upload/img' + paintingId + '.jpg';
-      thm_short_path = '/upload/thm' + paintingId + '.jpg';
-  }
-  else if (imgFileUpload == 'png') {
-      img_path = __dirname + '/upload/img' + paintingId + '.png';
-      thm_path = __dirname + '/upload/thm' + paintingId + '.png';
-      img_short_path = '/upload/img' + paintingId + '.png';
-      thm_short_path = '/upload/thm' + paintingId + '.png';
-  }
 
-  
+    if (imgFileUpload == 'jpg' || imgFileUpload == 'jpeg') {
+        img_path = __dirname + '/upload/img' + paintingId + '.jpg';
+        thm_path = __dirname + '/upload/thm' + paintingId + '.jpg';
+        img_short_path = '/upload/img' + paintingId + '.jpg';
+        thm_short_path = '/upload/thm' + paintingId + '.jpg';
+    }
+    else if (imgFileUpload == 'png') {
+        img_path = __dirname + '/upload/img' + paintingId + '.png';
+        thm_path = __dirname + '/upload/thm' + paintingId + '.png';
+        img_short_path = '/upload/img' + paintingId + '.png';
+        thm_short_path = '/upload/thm' + paintingId + '.png';
+    }
+
+
     //SQL Select
     let sql2 = "SELECT id FROM painting ORDER BY id DESC limit 1";
     let rows2 = await executeSQL(sql2);
     let paintingId = rows2[0].id;
-   // console.log(rows2);
-  //  console.log('the painting id is ' + paintingId);
+    // console.log(rows2);
+    //  console.log('the painting id is ' + paintingId);
 
     // Move the uploaded image to our upload folder
     // add logic for choosing file type based on the image.name.
@@ -222,9 +223,9 @@ app.post('/upload', async function(req, res) {
     //use async/await with image.mv
     try {
         await image.mv(img_path);
-       // console.log(img_path);
+        // console.log(img_path);
     } catch (err) {
-       // console.error(err);
+        // console.error(err);
         return res.sendStatus(500); // handle error
     }
 
@@ -234,7 +235,7 @@ app.post('/upload', async function(req, res) {
             if (err) {
                 //console.log(err);
             } else {
-               // console.log(resizeImage);
+                // console.log(resizeImage);
             }
         })
         return res.status(201).json({

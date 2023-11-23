@@ -8,17 +8,7 @@ $(document).ready(function() {
     });
 });
 
-console.log('this script is running');
-
-if (typeof jQuery == 'undefined') {
-    console.log('jquery is not loaded');
-} else {
-    console.log('jquery is loaded');
-}
-
-if (jQuery) {
-    console.log('jquery is loaded');
-} else {
-    console.log('not loaded');
-}
-
+// collapse navbar when anchor link is clicked in portfolio submenu
+$('.dropdown-item').on('click', function(event) {
+    $('.navbar-collapse').collapse('hide');
+});

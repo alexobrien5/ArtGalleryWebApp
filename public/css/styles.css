@@ -6,12 +6,22 @@
     BODY
 ----------------------------------------*/
 
+html, body {
+    height: 100%;
+}
+
 body {
     -webkit-font-smoothing: antialiased;
     -webkit-text-size-adjust: 100%;
     margin: 0;
     padding: 0;
     font-family: 'Roboto Slab', serif;
+    display: flex; /* push footer to bottom of screen even on short pages */
+    flex-direction: column; /* push footer to bottom of screen even on short pages */
+}
+
+.container {
+    flex: 1; /* push footer to bottom of screen even on short pages */
 }
 
 h1, h2, h3, h4, h5, h6 {
