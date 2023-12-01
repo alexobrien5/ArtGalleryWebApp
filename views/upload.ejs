@@ -16,22 +16,34 @@
           <input type="text" placeholder="Enter Painting Name" name="name" />
          <br><br>
 
-          <input type="text" placeholder="Enter painting dimensions"  name="dimensions" />
+          <input type="text" placeholder="Enter Painting Dimensions"  name="dimensions" />
          <br><br>
 
-        <select name="type">
-         <option disabled selected value> -- Select a painting type</option>
+        <select name="classification">
+         <option disabled selected value> -- Select a classification</option>
          <option value="Figurative">Figurative</option>
-         <option value="Landscapes">Landscapes</option>
+         <option value="Scapes">Landscapes</option>
+         <option value="Scapes">Plenair</option>
          <option value="Still">Still Life</option>
          <option value="Other">Other</option>
         </select>
         <br><br>
-        <input type="radio" name="available" value="Yes">
+
+        <select name="type">
+         <option disabled selected value> -- Select a media type</option>
+         <option value="Watercolor">Watercolor</option>
+         <option value="Oil">Oil</option>
+         <option value="Conte Crayon">Conte Crayon</option>
+         <option value="Charcoal">Charcoal</option>
+         <option value="Gouache">Gouache</option>
+        </select>
+        <br><br>
+        
+        <input type="radio" name="available" value="1">
         <label for="avail">Available</label>
 
-        <input type="radio" name="available" value="No">
-        <label for="not-avail">Unavailable</label>
+        <input type="radio" name="available" value="0">
+        <label for="not-avail">Sold</label>
         <br>  <br>  
           <input type="file" name="image" />
           <button type="submit" class = "btn btn-dark">Upload</button>
@@ -42,11 +54,11 @@
         
       </form>
             <br>  
-            <% if (typeof mailError!= "undefined" && mailError) { %>
+            <% if (typeof uploadError!= "undefined" && uploadError) { %>
                 <div class="unsent">
                     <h3 class="error">Image failed to upload</h3>
                 </div>
-                <% } else if (typeof mailError != "undefined" && !mailError) { %>
+                <% } else if (typeof uploadError != "undefined" && !uploadError) { %>
                 <div class="sent">
                    <h3 class="success"> Image was successfully Uploaded!</h3>
                 </div>

@@ -64,16 +64,16 @@ app.get("/about", (req, res) => {
 app.get("/portfolio", async (req, res) => {
     let user = req.session.user;
     let page = "portfolio";
-    let sql1 = `SELECT * FROM painting WHERE media_type = 'figurative'`;
+    let sql1 = `SELECT * FROM painting WHERE classification = 'figurative' ORDER BY id DESC`;
     let rows1 = await executeSQL(sql1);
 
-    let sql2 = `SELECT * FROM painting WHERE media_type = 'landscapes'`;
+    let sql2 = `SELECT * FROM painting WHERE classification = 'landscapes' ORDER BY id DESC`;
     let rows2 = await executeSQL(sql2);
 
-    let sql3 = `SELECT * FROM painting WHERE media_type = 'still'`;
+    let sql3 = `SELECT * FROM painting WHERE classification = 'still' ORDER BY id DESC`;
     let rows3 = await executeSQL(sql3);
 
-    let sql4 = `SELECT * FROM painting WHERE media_type = 'other'`;
+    let sql4 = `SELECT * FROM painting WHERE classification = 'other' ORDER BY id DESC`;
     let rows4 = await executeSQL(sql4);
 
     res.render("portfolio", {
@@ -146,9 +146,13 @@ app.post('/upload', async function(req, res) {
     // Get the file that was set to our field named "image"
     const { image } = req.files;
 
+    let user = req.session.user;
+    let page = "upload";
+
     //Backend data declarations
     let name = req.body.name;
     let dimensions = req.body.dimensions;
+    let classification = req.body.classification;
     let type = req.body.type;
     let location = req.body.location;
     let available = req.body.available;
@@ -158,12 +162,14 @@ app.post('/upload', async function(req, res) {
     let thm_path = 'temp';
 
     //SQL Insert
-    let sql = "INSERT INTO painting (name, dimensions, media_type, location, availability, img_path, thm_path) VALUES (?, ?, ?, ?, ?, ?, ?);"
-    let params = [name, dimensions, type, location, available, img_path, thm_path];
+    let sql = "INSERT INTO painting (name, dimensions, classification, media_type, location, availability, img_path, thm_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
+    let params = [name, dimensions, classification, type, location, available, img_path, thm_path];
     await executeSQL(sql, params);
 
     // If no image submitted, exit
-    if (!image) return res.sendStatus(400);
+    if (!image) {
+        return res.sendStatus(400);
+    }
 
     // If does not have image mime type prevent from uploading
     if (!(/^image/.test(image.mimetype))) {
@@ -228,7 +234,7 @@ app.post('/upload', async function(req, res) {
         // console.error(err);
         return res.sendStatus(500); // handle error
     }
-
+    
     // Use sharp to generate thumbnail
     try {
         sharp(img_path).resize(500, 500).withMetadata().toFile(thm_path, (err, resizeImage) => {
@@ -238,16 +244,11 @@ app.post('/upload', async function(req, res) {
                 // console.log(resizeImage);
             }
         })
-        return res.status(201).json({
-            message: 'File uploaded successfully'
-        });
     } catch (error) {
         console.error(error);
     };
 
-    let user = req.session.user;
-    let page = "upload";
-    res.render("upload", { "page_name": page, "userID": user });
+    res.render("upload", { "uploadError": false, "page_name": page, "userID": user });
 
 });
 
@@ -259,7 +260,7 @@ app.post("/contact", async (req, res) => {
         mainMail(name, email, subject, message);
         res.render("contact", { "mailError": false, "page_name": page, "userID": user });
     } catch (error) {
-        res.render("contact", { "loginError": true, "page_name": page, "userID": user });
+        res.render("contact", { "mailError": true, "page_name": page, "userID": user });
     }
 });
 

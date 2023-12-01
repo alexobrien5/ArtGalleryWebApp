@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand-lg sticky-top" id="navbar-scrollspy">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">Diane's Paintings</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -12,17 +12,29 @@
                     <li class="nav-item">
                       <a <% if (page_name === 'about') { %>class="nav-link active" aria-current="page" <% } else { %>class="nav-link"<% } %> href="/about">About</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a <% if (page_name === 'portfolio') { %>class="nav-link active" <% } else { %>class="nav-link<% } %> dropdown-toggle" href="/portfolio" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Portfolio
+                          
+                    <% if (page_name === 'portfolio') { %>
+                        <li class="nav-item dropdown">
+                    <% } else { %>
+                        <li class="nav-item">
+                    <% } %>
+                    
+                        <a 
+                          <% if (page_name === 'portfolio') { %>
+                            class="nav-link active dropdown-toggle" href="/portfolio" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                          <% } else { %>
+                            class="nav-link" href="/portfolio"
+                          <% } %>
+                        >
+                          Portfolio
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="/portfolio#figurative">Figurative</a></li>
-                            <li><a class="dropdown-item" href="/portfolio#landscapes">Landscapes</a></li>
+                            <li><a class="dropdown-item" href="portfolio/#figurative">Figurative</a></li>
+                            <li><a class="dropdown-item" href="portfolio/#landscapes">Landscapes</a></li>
                             <!-- <li><hr class="dropdown-divider"></li> -->
-                            <li><a class="dropdown-item" href="/portfolio#still">Still Life</a></li>
-                            <li><a class="dropdown-item" href="/portfolio#other">Other Works</a></li>
-                          </ul>
+                            <li><a class="dropdown-item" href="portfolio/#still">Still Life</a></li>
+                            <li><a class="dropdown-item" href="portfolio/#other">Other Works</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a <% if (page_name === 'contact') { %>class="nav-link active" aria-current="page" <% } else { %>class="nav-link"<% } %> href="/contact">Contact</a>
