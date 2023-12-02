@@ -7,20 +7,20 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav ms-auto mb-2 mb-lg-0"> 
                     <li class="nav-item">
-                      <a <% if (page_name === 'index') { %>class="nav-link active" aria-current="page" <% } else { %>class="nav-link"<% } %> href="/">Welcome</a>
+                      <a <% if ((typeof page_name != 'undefined') && (page_name === 'index')) { %>class="nav-link active" aria-current="page" <% } else { %>class="nav-link"<% } %> href="/">Welcome</a>
                     </li>
                     <li class="nav-item">
-                      <a <% if (page_name === 'about') { %>class="nav-link active" aria-current="page" <% } else { %>class="nav-link"<% } %> href="/about">About</a>
+                      <a <% if ((typeof page_name != 'undefined') && (page_name === 'about')) { %>class="nav-link active" aria-current="page" <% } else { %>class="nav-link"<% } %> href="/about">About</a>
                     </li>
                           
-                    <% if (page_name === 'portfolio') { %>
+                    <% if ((typeof page_name != 'undefined') && (page_name === 'portfolio')) { %>
                         <li class="nav-item dropdown">
                     <% } else { %>
                         <li class="nav-item">
                     <% } %>
                     
                         <a 
-                          <% if (page_name === 'portfolio') { %>
+                          <% if ((typeof page_name != 'undefined') && (page_name === 'portfolio')) { %>
                             class="nav-link active dropdown-toggle" href="/portfolio" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"
                           <% } else { %>
                             class="nav-link" href="/portfolio"
@@ -37,17 +37,18 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a <% if (page_name === 'contact') { %>class="nav-link active" aria-current="page" <% } else { %>class="nav-link"<% } %> href="/contact">Contact</a>
+                        <a <% if ((typeof page_name != 'undefined') && (page_name === 'contact')) { %>
+                          class="nav-link active" aria-current="page" <% } else { %>class="nav-link"<% } %> href="/contact">Contact</a>
                     </li>
 
                     
-                    <% if (userID === 'admin') { %>
+                    <% if ((typeof userID != 'undefined') && (userID === 'admin')) { %>
                         <li class="nav-item">
                             <a <% if (page_name === 'upload') { %>class="nav-link active" aria-current="page" <% } else { %>class="nav-link"<% } %> href="/upload">Upload</a>
                         </li>
                     <% } %>
 
-                    <% if (userID === 'admin') { %>
+                    <% if ((typeof userID != 'undefined') && (userID === 'admin')) { %>
                         <li class="nav-item">
                             <a class="nav-link" href="/logout">Logout</a>
                         </li>

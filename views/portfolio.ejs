@@ -5,50 +5,27 @@
             <h1 class="text-center">Diane's Portfolio</h1>
             <h2 class="quotes text-center"><q>Don't wait for others to bring you happiness. Get started on making your own.</q></h2>
             <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-            <div class="section" id="figurative">
-                <h1 class="classification">Figurative</h1>
-                <% figurative.forEach(figurative => { %>
-                    <% var availabilityStatus = (figurative.availability === 0) ? 'Available' : 'Sold'; %>
-                    <a href="<%= figurative.img_path %>" data-lightbox="figurative"
-                        data-title="<%= figurative.name %> <br>
-                                    <%= figurative.dimensions %> <br>
-                                    <%= figurative.media_type %> <br>
-                                    <%= availabilityStatus %>
-                                    <% if (availabilityStatus === 'Available') { %>
-                        - <a href='/contact'>Contact</a> the Artist for more details! <% } %>">
-                        <img src="<%= figurative.thm_path %>" alt="<%= figurative.name %>">
-                    </a>
-                <% }); %>
-            </div>
-                    
-            <div class="section" id="landscapes">
-                <h1 class="classification">Landscapes</h1>
-                <% landscapes.forEach(landscapes => { %>
-                    <a href="<%= landscapes.img_path %>" data-lightbox="landscapes" data-title="<%= landscapes.name %>">
-                        <img src="<%= landscapes.thm_path %>" alt="<%= landscapes.name %>">
-                    </a>
-                <% }); %>
-            </div>
+          <% var classificationTypes = ['figurative', 'scapes', 'still', 'other']; %>
 
-            <div class="section" id="still">
-                <h1 class="classification">Still Life</h1>
-                <% still.forEach(still => { %>
-                    <a href="<%= still.img_path %>" data-lightbox="still" data-title="<%= still.name %>">
-                        <img src="<%= still.thm_path %>" alt="<%= still.name %>">
-                    </a>
-                <% }); %>
+          <% classificationTypes.forEach(classificationType => { %>
+            <div class="section" id="<%= classificationType %>">
+              <h1 class="classification"><%= classificationType.charAt(0).toUpperCase() + classificationType.slice(1) %></h1>
+              <% eval(`${classificationType}`).forEach(painting => { %>
+                <% var availabilityStatus = (painting.availability === 0) ? 'Available' : 'Sold'; %>
+                <a href="<%= painting.img_path %>" data-lightbox="<%= classificationType %>"
+                  data-title="<%= painting.name %> <br>
+                              <%= painting.dimensions %> <br>
+                              <%= painting.media_type %> <br>
+                              <% if (painting.location != null) { %>
+                              <%= painting.location %> <br> <% } %>
+                              <%= availabilityStatus %>
+                              <% if (availabilityStatus === 'Available') { %>
+                                - <a href='/contact'>Contact</a> the Artist for more details! <% } %>">
+                  <img src="<%= painting.thm_path %>" alt="<%= painting.name %>">
+                </a>
+              <% }); %>
             </div>
-
-            <div class="section" id="other">
-                <h1 class="classification">Other</h1>
-                <% other.forEach(other => { %>
-                    <a href="<%= other.img_path %>" data-lightbox="other" data-title="<%= other.name %>">
-                        <img src="<%= other.thm_path %>" alt="<%= other.name %>">
-                    </a>
-                <% }); %>
-            </div>
-
-            
+          <% }); %>
         </div>
     <%- include("partials/footer.ejs") %>
     </body>

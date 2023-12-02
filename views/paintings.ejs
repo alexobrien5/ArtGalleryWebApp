@@ -1,0 +1,87 @@
+<%- include("partials/header.ejs") %>
+<body>
+    <%- include("partials/nav.ejs") %>
+      <div class="container index-body">
+        <div class= "row justify-content-center">
+          <div class="col-lg-12 text-center">
+          <h1>Update Painting Information</h1>
+          <!-- table to show all information -->
+          <table class="painting_table">
+            <tr>
+              <th>Name</th>
+              <th>Dimensions</th>
+              <th>Classification</th>
+              <th>Media Type</th>
+              <th>Location</th>
+              <th>Availability</th>
+              <th>Action</th>
+            </tr>
+            <% paintings.forEach(painting => { %>
+              <tr>
+                <td><%= painting.name %></td>
+                <td><%= painting.dimensions %></td>
+                <td><%= painting.classification %></td>
+                <td><%= painting.media_type %></td>
+                <td><%= painting.location %></td>
+                <td><%= painting.availability === 1 ? 'Available' : 'Sold' %></td>
+                <td>
+                  <button onclick="openEditModal('<%= painting.id %>', '<%= painting.name %>', '<%= painting.dimensions %>', '<%= painting.classification %>', '<%= painting.media_type %>', '<%= painting.location %>', '<%= painting.availability %>')">Edit</button>
+                </td>
+              </tr>
+            <% }); %>
+          </table>
+              
+              <!-- Add a hidden modal for editing -->
+              <div id="editModal" class="modal">
+                <form id="editForm" method="post" action="/paintings/update/">
+                  <label for="editName">Name:</label>
+                  <input type="text" name="name" id="editName">
+
+                  <label for="editDimensions">Dimensions:</label>
+                  <input type="text" name="dimensions" id="editDimensions">
+
+                  <label for="editClassification">Classification:</label>
+                  <select name="classification" id="editClassification">
+                    <option value="Figurative">Figurative</option>
+                    <option value="Scapes">Scapes</option>
+                    <option value="Plein Air">Plein Air</option>
+                    <option value="Still Life">Still Life</option>
+                    <option value="Other">Other</option>
+                    <!-- Add more options as needed -->
+                  </select>
+
+                  <label for="editMediaType">Media Type:</label>
+                  <select name="media_type" id="editMediaType">
+                    <option value="Oil">Oil</option>
+                    <option value="Watercolor">Watercolor</option>
+                    <option value="Conte Crayon">Conte Crayon</option>
+                    <option value="Charcoal">Charcoal</option>
+                    <option value="Gouache">Gouache</option>
+                    <!-- Add more options as needed -->
+                  </select>
+
+                  <label for="editLocation">Location (if Plein Air):</label>
+                  <input type="text" name="location" id="editLocation">
+
+                  <label>Availability:</label>
+                  <!-- Availability Radio Buttons -->
+                  <div class="availability-options">
+                    <label for="editAvailable">Available</label>
+                    <input type="radio" id="editAvailable" name="availability" value="1">
+
+                    <label for="editSold">Sold</label>
+                    <input type="radio" id="editSold" name="availability" value="0">
+                  </div>
+
+                  <div class="modal-buttons">
+                    <button type="submit">Update</button>
+                    <button type="button" onclick="closeEditModal()" style="background-color: red;">Cancel</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            </div>
+            </div>
+<%- include("partials/footer.ejs") %>
+</body>
+</html>
