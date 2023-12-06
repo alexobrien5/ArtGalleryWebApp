@@ -18,6 +18,7 @@ app.use(express.static("public"));
 //line below allows express to parse values sent in form
 app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload());
+app.use(express.json());
 
 //session middleware
 const options = {
@@ -70,16 +71,16 @@ app.get("/about", (req, res) => {
 app.get("/portfolio", async (req, res) => {
   let user = req.session.user;
   let page = "portfolio";
-  let sql1 = `SELECT * FROM painting WHERE classification = 'figurative' ORDER BY id DESC`;
+  let sql1 = `SELECT * FROM painting WHERE classification = 'figurative' ORDER BY display_order`;
   let rows1 = await executeSQL(sql1);
 
-  let sql2 = `SELECT * FROM painting WHERE classification = 'scapes' ORDER BY id DESC`;
+  let sql2 = `SELECT * FROM painting WHERE classification = 'scapes' ORDER BY display_order`;
   let rows2 = await executeSQL(sql2);
 
-  let sql3 = `SELECT * FROM painting WHERE classification = 'still' ORDER BY id DESC`;
+  let sql3 = `SELECT * FROM painting WHERE classification = 'still' ORDER BY display_order`;
   let rows3 = await executeSQL(sql3);
 
-  let sql4 = `SELECT * FROM painting WHERE classification = 'other' ORDER BY id DESC`;
+  let sql4 = `SELECT * FROM painting WHERE classification = 'other' ORDER BY display_order`;
   let rows4 = await executeSQL(sql4);
 
   res.render("portfolio", {
@@ -105,9 +106,13 @@ app.get("/upload", (req, res) => {
 }); //upload
 
 app.get("/paintings", async (req, res) => {
-  let paintings = await executeSQL(`SELECT * FROM painting ORDER BY id DESC`);
-  res.render("paintings", { paintings });
-});
+  let user = req.session.user;
+  let page = "manage";
+  let paintings = await executeSQL(
+    `SELECT * FROM painting ORDER BY FIELD(classification, 'Figurative', 'Scapes', 'Still', 'Other'), display_order`
+  );
+  res.render("paintings", { paintings, page_name: page, userID: user });
+}); //paintings
 
 app.get("/login", (req, res) => {
   res.render("login");
@@ -209,24 +214,10 @@ app.post("/upload", async function (req, res) {
   //  var currentMime = image.mimetype.split("/").pop();
   //console.log(image.mimetype);
 
-  if (imgFileUpload == "jpg" || imgFileUpload == "jpeg") {
-    img_path = __dirname + "/upload/img" + paintingId + ".jpg";
-    thm_path = __dirname + "/upload/thm" + paintingId + ".jpg";
-    img_short_path = "/upload/img" + paintingId + ".jpg";
-    thm_short_path = "/upload/thm" + paintingId + ".jpg";
-  } else if (imgFileUpload == "png") {
-    img_path = __dirname + "/upload/img" + paintingId + ".png";
-    thm_path = __dirname + "/upload/thm" + paintingId + ".png";
-    img_short_path = "/upload/img" + paintingId + ".png";
-    thm_short_path = "/upload/thm" + paintingId + ".png";
-  }
-
   //SQL Select
   let sql2 = "SELECT id FROM painting ORDER BY id DESC limit 1";
   let rows2 = await executeSQL(sql2);
   let paintingId = rows2[0].id;
-  // console.log(rows2);
-  //  console.log('the painting id is ' + paintingId);
 
   // Move the uploaded image to our upload folder
   // add logic for choosing file type based on the image.name.
@@ -250,6 +241,22 @@ app.post("/upload", async function (req, res) {
   let sql3 = "UPDATE painting SET img_path = ?, thm_path = ? WHERE id = ?";
   let params3 = [img_short_path, thm_short_path, paintingId];
   await executeSQL(sql3, params3);
+
+  //SQL Select to find next display_order number and update record
+  let sql4 =
+    "SELECT display_order FROM painting WHERE classification = ? ORDER BY display_order DESC limit 1";
+  let rows4 = await executeSQL(sql4, [classification]);
+  // if first painting in classification, set display_order to 1
+  if (rows4[0].display_order == 0) {
+    let sql5 = "UPDATE painting SET display_order = 1 WHERE classification = ?";
+    let params5 = [classification];
+    await executeSQL(sql5, params5);
+  } else {
+    let orderNum = rows4[0].display_order + 1;
+    let sql5 = "UPDATE painting SET display_order = ? WHERE id = ?";
+    let params5 = [orderNum, paintingId];
+    await executeSQL(sql5, params5);
+  }
 
   //use async/await with image.mv
   try {
@@ -302,12 +309,138 @@ app.post("/paintings/update/:id", async (req, res) => {
   } = req.body;
   const id = req.params.id;
 
-  await executeSQL(
-    "UPDATE painting SET name=?, dimensions=?, classification=?, media_type=?, location=?, availability=? WHERE id=?",
-    [name, dimensions, classification, media_type, location, availability, id]
+  // Fetch the current order and classification of the target painting
+  const targetPainting = await executeSQL(
+    "SELECT display_order, classification FROM painting WHERE id = ?",
+    [id]
   );
 
+  if (!targetPainting || targetPainting.length === 0) {
+    return res.status(404).send("Painting not found");
+  }
+
+  const targetOrder = targetPainting[0].display_order;
+  const targetClassification = targetPainting[0].classification;
+
+  // Update the classification of the target painting
+  await executeSQL(
+    "UPDATE painting SET name=?, dimensions=?, classification=?, media_type=?, location=?, availability=?, display_order=? WHERE id=?",
+    [
+      name,
+      dimensions,
+      classification,
+      media_type,
+      location,
+      availability,
+      0,
+      id,
+    ]
+  );
+
+  // If the classification is changed, adjust display order for the target classification
+  if (classification !== targetClassification) {
+    // Move paintings with display_order greater than the target order down
+    await executeSQL(
+      "UPDATE painting SET display_order = display_order - 1 WHERE display_order > ? AND classification = ?",
+      [targetOrder, targetClassification]
+    );
+
+    // Increment the display order for paintings with the same or greater display order in the new classification
+    await executeSQL(
+      "UPDATE painting SET display_order = display_order + 1 WHERE classification = ?",
+      [classification]
+    );
+  }
+
   res.redirect("/paintings");
+});
+
+app.post("/paintings/move-order/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const direction = req.body.direction; // Assuming direction is sent in the request body
+
+    // Fetch the current order and classification of the target painting
+    const targetPainting = await executeSQL(
+      "SELECT display_order, classification FROM painting WHERE id = ?",
+      [id]
+    );
+
+    if (!targetPainting || targetPainting.length === 0) {
+      return res.status(404).send("Painting not found");
+    }
+
+    const targetOrder = targetPainting[0].display_order;
+    const targetClassification = targetPainting[0].classification;
+
+    // Fetch the adjacent painting based on the target order
+    const adjacentPainting = await executeSQL(
+      "SELECT id, display_order FROM painting WHERE display_order = ? AND classification = ?",
+      [targetOrder + (direction === "up" ? -1 : 1), targetClassification]
+    );
+
+    if (!adjacentPainting || adjacentPainting.length === 0) {
+      return res.status(400).send("Adjacent painting not found");
+    }
+
+    const adjacentPaintingId = adjacentPainting[0].id;
+    const adjacentPaintingOrder = adjacentPainting[0].display_order;
+
+    // Swap the order between the target painting and the adjacent painting
+    await executeSQL("UPDATE painting SET display_order = ? WHERE id = ?", [
+      adjacentPaintingOrder,
+      id,
+    ]);
+    await executeSQL("UPDATE painting SET display_order = ? WHERE id = ?", [
+      targetOrder,
+      adjacentPaintingId,
+    ]);
+
+    // Redirect only after the database updates are completed
+    res.redirect("/paintings?" + new Date().getTime());
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+/* -----------------------------------
+            DELETE ROUTE
+----------------------------------- */
+
+app.delete("/paintings/delete/:id", async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    // Fetch the current order and classification of the target painting
+    const targetPainting = await executeSQL(
+      "SELECT display_order, classification FROM painting WHERE id = ?",
+      [id]
+    );
+
+    if (!targetPainting || targetPainting.length === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Painting not found" });
+    }
+
+    const targetOrder = targetPainting[0].display_order;
+    const targetClassification = targetPainting[0].classification;
+
+    // Delete the target painting
+    await executeSQL("DELETE FROM painting WHERE id = ?", [id]);
+
+    // Update display order for remaining paintings in the same classification
+    await executeSQL(
+      "UPDATE painting SET display_order = display_order - 1 WHERE display_order > ? AND classification = ?",
+      [targetOrder, targetClassification]
+    );
+
+    res.json({ success: true, message: "Painting deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting painting:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
 });
 
 /* -----------------------------------
@@ -354,6 +487,10 @@ async function mainMail(name, email, subject, message) {
     return Promise.reject(error);
   }
 } //mainMail
+
+// findMaxOrder() => {
+
+// });
 
 app.listen(3000, () => {
   console.log("Expresss server running...");

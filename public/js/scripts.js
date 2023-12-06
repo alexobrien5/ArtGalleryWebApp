@@ -71,29 +71,69 @@ function openEditModal(
   soldRadio.checked = availability == 0;
 
   modal.style.display = "block";
-
-  // Allow the modal to dynamically adjust its size based on content
-  modalContent.style.maxWidth = "80vw";
-  modalContent.style.width = "auto";
-  modalContent.style.maxHeight = "80vh";
-  modalContent.style.overflowY = "auto";
-
-  modalContent.style.maxHeight = maxHeight + "px";
 }
 
 function closeEditModal() {
   document.getElementById("editModal").style.display = "none";
 }
 
-// update order of paintings if logged in
-function updateOrder(paintingId, newOrder) {
-  fetch(`/updateOrder/${paintingId}/${newOrder}`, {
-    method: "POST",
-  })
-    .then((response) => response.text())
-    .then((data) => {
-      console.log(data);
-      // Optionally, you can reload the page or update the UI after a successful update
+// ADJUSTING ORDER
+async function moveOrderUp(paintingId) {
+  try {
+    const response = await fetch(`/paintings/move-order/${paintingId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ direction: "up" }),
+    });
+
+    // Reload the page after a short delay
+    setTimeout(() => {
+      window.location.reload(true);
+    }, 100);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+async function moveOrderDown(paintingId) {
+  try {
+    const response = await fetch(`/paintings/move-order/${paintingId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ direction: "down" }),
+    });
+
+    // Reload the page after a short delay
+    setTimeout(() => {
+      window.location.reload(true);
+    }, 100);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+// delete painting
+function deletePainting(id) {
+  if (confirm("Are you sure you want to delete this painting?")) {
+    fetch(`/paintings/delete/${id}`, {
+      method: "DELETE",
     })
-    .catch((error) => console.error("Error updating order:", error));
+      .then((response) => response.json())
+      .then((data) => {
+        // Assuming data.success is a boolean indicating whether the deletion was successful
+        if (data.success) {
+          // Reload the page or update the UI as needed
+          location.reload();
+        } else {
+          console.error("Failed to delete painting");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
 }

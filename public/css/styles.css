@@ -24,7 +24,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .quotes {
-    font-family: 'Ephesis', cursive;
+  font-family: 'Kaushan Script', cursive;
 }
 
 .upload-body{
@@ -206,6 +206,7 @@ contact-body {
   width: 400px;
   max-height: 54%; /* Set maximum height as needed */
   overflow-y: auto; /* Enable vertical scrolling if content overflows */
+  /* overflow-x: auto; */
   background-color: #fff;
   padding: 20px;
   border: 1px solid #ccc;
@@ -258,13 +259,66 @@ contact-body {
   overflow-y: auto; /* Enable vertical scrolling if content exceeds max height */
 }
 
-.availability-options {
+.availability-option {
   display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.availability-option label {
+  margin-right: 10px; /* Adjust as needed to provide spacing between label and radio button */
+}
+
+/* Media query for screens smaller than 600px */
+@media screen and (max-width: 600px) {
+  .availability-option {
+    flex-direction: column; /* Change to a column layout for smaller screens */
+    align-items: flex-start; /* Align items to the start for better readability */
+  }
+
+  .availability-option label {
+    margin-right: 0; /* Remove right margin for labels */
+    margin-bottom: 5px; /* Add bottom margin for better spacing */
+  }
+}
+
+.classification-row {
+  background-color: #f2f2f2; /* Set a background color for classification rows */
+}
+
+.action-cell {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px; /* Adjust the gap as needed */
   align-items: center;
 }
 
-.availability-options label {
-  margin-right: 10px; /* Adjust as needed to provide spacing between label and radio button */
+.edit-btn, .move-up-btn, .delete-btn, .move-down-btn {
+  width: 100%; /* Adjust the width as needed */
+  height: 48px; /* Adjust the height as needed */
+  font-size: 20px; /* Adjust the font size as needed */
+  cursor: pointer;
+}
+
+/* Add styles for individual buttons as needed */
+.edit-btn {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.move-up-btn {
+  background-color: #2196f3;
+  color: #fff;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.move-down-btn {
+  background-color: #2196f3;
+  color: #fff;
 }
 
 /*----------------------------------------
@@ -326,6 +380,10 @@ html {
 
 body {
     margin-bottom: 50px;
+}
+
+.footer_socials a {
+  text-decoration: none;
 }
 
 .socials img {

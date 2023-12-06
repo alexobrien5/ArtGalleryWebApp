@@ -19,11 +19,26 @@
           <input type="text" placeholder="Enter Painting Dimensions"  name="dimensions" />
          <br><br>
 
+
+        <script type="text/javascript">
+            function ShowHideDiv(chkPassport) {
+                var dvPassport = document.getElementById("paintingLocation");
+                dvPassport.style.display = chkPassport.checked ? "block" : "none";
+            }
+        </script>
+        <label for="scapeCheck">
+            <input type="checkbox" id="scapeCheck" onclick="ShowHideDiv(this)" />
+            Is the painting a Plen Air?
+        </label>
+        <hr />
+        <div name ="paintingLocation" id="paintingLocation" style="display: none">
+            <input type="text" id="paintingLocation" placeholder="Enter Location" name="location" />
+        </div>
+
         <select name="classification">
          <option disabled selected value> -- Select a classification</option>
          <option value="Figurative">Figurative</option>
          <option value="Scapes">Scapes</option>
-         <option value="Scapes">Plein Air</option>
          <option value="Still">Still Life</option>
          <option value="Other">Other</option>
         </select>
@@ -49,6 +64,9 @@
           <button type="submit" class = "btn btn-dark">Upload</button>
         <br><br>
 
+
+
+        
         
       </div>
         

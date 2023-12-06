@@ -1,13 +1,14 @@
 <%- include("partials/header.ejs") %>
 <body>
     <%- include("partials/nav.ejs") %>
-      <div class="container index-body">
+      <div class="paintings-body">
         <div class= "row justify-content-center">
           <div class="col-lg-12 text-center">
           <h1>Update Painting Information</h1>
           <!-- table to show all information -->
           <table class="painting_table">
             <tr>
+              <th>Thumbnail</th> <!-- New column for thumbnail images -->
               <th>Name</th>
               <th>Dimensions</th>
               <th>Classification</th>
@@ -15,17 +16,77 @@
               <th>Location</th>
               <th>Availability</th>
               <th>Action</th>
+              <th>Order</th>
             </tr>
-            <% paintings.forEach(painting => { %>
+
+            <% let currentClassification = null; %>
+            <% let currentClassificationRows = []; %>
+
+            <% paintings.forEach((painting, index, array) => { %>
+              <% if (painting.classification !== currentClassification) { %>
+                <% if (currentClassificationRows.length > 0) { %>
+                  <!-- Display rows within a classification -->
+                  <% currentClassificationRows.forEach((row, rowIndex) => { %>
+                    <tr>
+                      <td><img class="thumbs" src="<%= row.thm_path %>" alt="Thumbnail" style="width: 50px; height: 50px; border-radius: 5%;"></td> <!-- Display the thumbnail image -->
+                      <td><%= row.name %></td>
+                      <td><%= row.dimensions %></td>
+                      <td><%= row.classification %></td>
+                      <td><%= row.media_type %></td>
+                      <td><%= row.location %></td>
+                      <td><%= row.availability === 1 ? 'Available' : 'Sold' %></td>
+                      <td>
+                        <img src="/img/main/edit.png" alt="Edit" onclick="openEditModal('<%= row.id %>', '<%= row.name %>', '<%= row.dimensions %>', '<%= row.classification %>', '<%= row.media_type %>', '<%= row.location %>', '<%= row.availability %>')" class="edit-btn-icon">
+                          <img src="/img/main/delete.png" alt="Delete" onclick="deletePainting('<%= row.id %>')" class="delete-btn-icon">
+                      </td>
+                      <td>
+                        <div class="order-buttons">
+                          <% if (rowIndex !== 0) { %>
+                              <img src="/img/main/move-up.png" alt="Move Up" onclick="moveOrderUp('<%= row.id %>')" class="moveup-btn-icon">
+                          <% } %>
+                          <% if (rowIndex !== currentClassificationRows.length - 1) { %>
+                              <img src="/img/main/move-down.png" alt="Move Down" onclick="moveOrderDown('<%= row.id %>')" class="movedown-btn-icon">
+                          <% } %>
+                        </div>
+                      </td>
+                    </tr>
+                  <% }); %>
+                <% } %>
+
+                <!-- Add a new row for each classification -->
+                <tr class="classification-row">
+                  <td colspan="9"><strong><%= painting.classification %></strong></td>
+                </tr>
+                <% currentClassification = painting.classification; %>
+                <% currentClassificationRows = []; %>
+              <% } %>
+
+              <% currentClassificationRows.push(painting); %>
+            <% }); %>
+
+            <!-- Display the last set of rows within the last classification -->
+            <% currentClassificationRows.forEach((row, rowIndex) => { %>
               <tr>
-                <td><%= painting.name %></td>
-                <td><%= painting.dimensions %></td>
-                <td><%= painting.classification %></td>
-                <td><%= painting.media_type %></td>
-                <td><%= painting.location %></td>
-                <td><%= painting.availability === 1 ? 'Available' : 'Sold' %></td>
+                <td><img class="thumbs" src="<%= row.thm_path %>" alt="Thumbnail" style="width: 50px; height: 50px; border-radius: 5%;"></td> <!-- Display the thumbnail image -->
+                <td><%= row.name %></td>
+                <td><%= row.dimensions %></td>
+                <td><%= row.classification %></td>
+                <td><%= row.media_type %></td>
+                <td><%= row.location %></td>
+                <td><%= row.availability === 1 ? 'Available' : 'Sold' %></td>
                 <td>
-                  <button onclick="openEditModal('<%= painting.id %>', '<%= painting.name %>', '<%= painting.dimensions %>', '<%= painting.classification %>', '<%= painting.media_type %>', '<%= painting.location %>', '<%= painting.availability %>')">Edit</button>
+                  <img src="/img/main/edit.png" alt="Edit" onclick="openEditModal('<%= row.id %>', '<%= row.name %>', '<%= row.dimensions %>', '<%= row.classification %>', '<%= row.media_type %>', '<%= row.location %>', '<%= row.availability %>')" class="edit-btn-icon">
+                      <img src="/img/main/delete.png" alt="Delete" onclick="deletePainting('<%= row.id %>')" class="delete-btn-icon">
+                  </td>
+                  <td>
+                    <div class="order-buttons">
+                      <% if (rowIndex !== 0) { %>
+                          <img src="/img/main/move-up.png" alt="Move Up" onclick="moveOrderUp('<%= row.id %>')" class="moveup-btn-icon">
+                      <% } %>
+                      <% if (rowIndex !== currentClassificationRows.length - 1) { %>
+                          <img src="/img/main/move-down.png" alt="Move Down" onclick="moveOrderDown('<%= row.id %>')" class="movedown-btn-icon">
+                    <% } %>
+                  </div>
                 </td>
               </tr>
             <% }); %>
@@ -65,10 +126,9 @@
 
                   <label>Availability:</label>
                   <!-- Availability Radio Buttons -->
-                  <div class="availability-options">
+                  <div class="availability-option">
                     <label for="editAvailable">Available</label>
                     <input type="radio" id="editAvailable" name="availability" value="1">
-
                     <label for="editSold">Sold</label>
                     <input type="radio" id="editSold" name="availability" value="0">
                   </div>
