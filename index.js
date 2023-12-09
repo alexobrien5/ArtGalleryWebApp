@@ -37,7 +37,7 @@ app.use(
     resave: true,
     saveUnitialized: true,
     store: sessionStore,
-  })
+  }),
 );
 
 //local api for username
@@ -71,25 +71,16 @@ app.get("/about", (req, res) => {
 app.get("/portfolio", async (req, res) => {
   let user = req.session.user;
   let page = "portfolio";
-  let sql1 = `SELECT * FROM painting WHERE classification = 'figurative' ORDER BY display_order`;
-  let rows1 = await executeSQL(sql1);
-
-  let sql2 = `SELECT * FROM painting WHERE classification = 'scapes' ORDER BY display_order`;
-  let rows2 = await executeSQL(sql2);
-
-  let sql3 = `SELECT * FROM painting WHERE classification = 'still' ORDER BY display_order`;
-  let rows3 = await executeSQL(sql3);
-
-  let sql4 = `SELECT * FROM painting WHERE classification = 'other' ORDER BY display_order`;
-  let rows4 = await executeSQL(sql4);
+  let paintings = await executeSQL(
+    `SELECT * FROM painting ORDER BY FIELD(classification, 'Figurative', 'Scapes', 'Still Life', 'Other'), display_order`,
+  );
+  let classificationTypes = ["figurative", "scapes", "still life", "other"];
 
   res.render("portfolio", {
     page_name: page,
     userID: user,
-    figurative: rows1,
-    scapes: rows2,
-    still: rows3,
-    other: rows4,
+    paintings: paintings,
+    classificationTypes: classificationTypes,
   });
 }); //portfolio
 
@@ -109,7 +100,7 @@ app.get("/paintings", async (req, res) => {
   let user = req.session.user;
   let page = "manage";
   let paintings = await executeSQL(
-    `SELECT * FROM painting ORDER BY FIELD(classification, 'Figurative', 'Scapes', 'Still', 'Other'), display_order`
+    `SELECT * FROM painting ORDER BY FIELD(classification, 'Figurative', 'Scapes', 'Still Life', 'Other'), display_order`,
   );
   res.render("paintings", { paintings, page_name: page, userID: user });
 }); //paintings
@@ -182,23 +173,10 @@ app.post("/upload", async function (req, res) {
   let available = req.body.available;
 
   // temp values until the image file type is checked, required for not null values
-  let img_path = "temp";
-  let thm_path = "temp";
-
-  //SQL Insert
-  let sql =
-    "INSERT INTO painting (name, dimensions, classification, media_type, location, availability, img_path, thm_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-  let params = [
-    name,
-    dimensions,
-    classification,
-    type,
-    location,
-    available,
-    img_path,
-    thm_path,
-  ];
-  await executeSQL(sql, params);
+  let img_path;
+  let thm_path;
+  let img_short_path;
+  let thm_short_path;
 
   // If no image submitted, exit
   if (!image) {
@@ -211,13 +189,14 @@ app.post("/upload", async function (req, res) {
     return res.sendStatus(400);
   }
 
-  //  var currentMime = image.mimetype.split("/").pop();
-  //console.log(image.mimetype);
+  // var currentMime = image.mimetype.split("/").pop();
+  // console.log(image.mimetype);
+  // console.log(currentMime);
 
-  //SQL Select
+  // Get last id to create next id variable
   let sql2 = "SELECT id FROM painting ORDER BY id DESC limit 1";
   let rows2 = await executeSQL(sql2);
-  let paintingId = rows2[0].id;
+  let paintingId = rows2[0].id + 1;
 
   // Move the uploaded image to our upload folder
   // add logic for choosing file type based on the image.name.
@@ -225,37 +204,20 @@ app.post("/upload", async function (req, res) {
   // read last 3 digits of image file uploaded
   // based on that, if/then statements for creating the imgPath and thmPath paths
   var imgFileUpload = image.name.split(".").pop();
-  if (imgFileUpload == "jpg" || imgFileUpload == "jpeg") {
+  console.log(imgFileUpload);
+  if (
+    imgFileUpload.toLowerCase() === "jpg" ||
+    imgFileUpload.toLowerCase() === "jpeg"
+  ) {
     img_path = __dirname + "/upload/img" + paintingId + ".jpg";
     thm_path = __dirname + "/upload/thm" + paintingId + ".jpg";
     img_short_path = "/upload/img" + paintingId + ".jpg";
     thm_short_path = "/upload/thm" + paintingId + ".jpg";
-  } else if (imgFileUpload == "png") {
+  } else if (imgFileUpload.toLowerCase() === "png") {
     img_path = __dirname + "/upload/img" + paintingId + ".png";
     thm_path = __dirname + "/upload/thm" + paintingId + ".png";
     img_short_path = "/upload/img" + paintingId + ".png";
     thm_short_path = "/upload/thm" + paintingId + ".png";
-  }
-
-  //SQL Update for filenames
-  let sql3 = "UPDATE painting SET img_path = ?, thm_path = ? WHERE id = ?";
-  let params3 = [img_short_path, thm_short_path, paintingId];
-  await executeSQL(sql3, params3);
-
-  //SQL Select to find next display_order number and update record
-  let sql4 =
-    "SELECT display_order FROM painting WHERE classification = ? ORDER BY display_order DESC limit 1";
-  let rows4 = await executeSQL(sql4, [classification]);
-  // if first painting in classification, set display_order to 1
-  if (rows4[0].display_order == 0) {
-    let sql5 = "UPDATE painting SET display_order = 1 WHERE classification = ?";
-    let params5 = [classification];
-    await executeSQL(sql5, params5);
-  } else {
-    let orderNum = rows4[0].display_order + 1;
-    let sql5 = "UPDATE painting SET display_order = ? WHERE id = ?";
-    let params5 = [orderNum, paintingId];
-    await executeSQL(sql5, params5);
   }
 
   //use async/await with image.mv
@@ -282,6 +244,39 @@ app.post("/upload", async function (req, res) {
   } catch (error) {
     console.error(error);
   }
+
+  // if all tests pass, insert into database
+  //SQL Insert
+  let sql =
+    "INSERT INTO painting (name, dimensions, classification, media_type, location, availability, img_path, thm_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+  let params = [
+    name,
+    dimensions,
+    classification,
+    type,
+    location,
+    available,
+    img_short_path,
+    thm_short_path,
+  ];
+  await executeSQL(sql, params);
+
+  //SQL Update for filenames
+  let sql3 = "UPDATE painting SET img_path = ?, thm_path = ? WHERE id = ?";
+  let params3 = [img_short_path, thm_short_path, paintingId];
+  await executeSQL(sql3, params3);
+
+  // Set display order to 1 and move everything else in classification down 1
+  // first move display order down on classification
+  await executeSQL(
+    "UPDATE painting SET display_order = display_order + 1 WHERE classification = ?",
+    [classification],
+  );
+  // then set display_order to 1 on uploaded painting
+  await executeSQL("UPDATE painting SET display_order = ? where id = ?", [
+    1,
+    paintingId,
+  ]);
 
   res.render("upload", { uploadError: false, page_name: page, userID: user });
 }); //upload
@@ -312,7 +307,7 @@ app.post("/paintings/update/:id", async (req, res) => {
   // Fetch the current order and classification of the target painting
   const targetPainting = await executeSQL(
     "SELECT display_order, classification FROM painting WHERE id = ?",
-    [id]
+    [id],
   );
 
   if (!targetPainting || targetPainting.length === 0) {
@@ -332,23 +327,56 @@ app.post("/paintings/update/:id", async (req, res) => {
       media_type,
       location,
       availability,
-      0,
+      targetOrder,
       id,
-    ]
+    ],
   );
 
+  // if updated classification is a new classification
+  let newClassification = false;
+  let classificationAmt = await executeSQL(
+    "SELECT * FROM painting WHERE classification = ?",
+    [classification],
+  );
+
+  if (classificationAmt.length === 1) {
+    newClassification = true;
+  }
+
   // If the classification is changed, adjust display order for the target classification
-  if (classification !== targetClassification) {
+  if (classification !== targetClassification && !newClassification) {
+    // Move paintings with display_order greater than the target order down - OLD CLASS
+    await executeSQL(
+      "UPDATE painting SET display_order = display_order - 1 WHERE display_order > ? AND classification = ?",
+      [targetOrder, targetClassification],
+    );
+
+    // Increment the display order for paintings with the same or greater display order - NEW CLASS
+    // Move everything else down by 1 first
+    await executeSQL(
+      "UPDATE painting SET display_order = display_order + 1 WHERE classification = ?",
+      [classification],
+    );
+
+    // Set target painting display order to 1
+    await executeSQL("UPDATE painting SET display_order = ? WHERE id = ?", [
+      1,
+      id,
+    ]);
+  }
+
+  // if the classification is changed to a brand new classification
+  if (classification !== targetClassification && newClassification) {
     // Move paintings with display_order greater than the target order down
     await executeSQL(
       "UPDATE painting SET display_order = display_order - 1 WHERE display_order > ? AND classification = ?",
-      [targetOrder, targetClassification]
+      [targetOrder, targetClassification],
     );
 
-    // Increment the display order for paintings with the same or greater display order in the new classification
+    // Set target painting display order to 1
     await executeSQL(
-      "UPDATE painting SET display_order = display_order + 1 WHERE classification = ?",
-      [classification]
+      "UPDATE painting SET display_order = ? WHERE classification = ?",
+      [1, classification],
     );
   }
 
@@ -363,7 +391,7 @@ app.post("/paintings/move-order/:id", async (req, res) => {
     // Fetch the current order and classification of the target painting
     const targetPainting = await executeSQL(
       "SELECT display_order, classification FROM painting WHERE id = ?",
-      [id]
+      [id],
     );
 
     if (!targetPainting || targetPainting.length === 0) {
@@ -376,7 +404,7 @@ app.post("/paintings/move-order/:id", async (req, res) => {
     // Fetch the adjacent painting based on the target order
     const adjacentPainting = await executeSQL(
       "SELECT id, display_order FROM painting WHERE display_order = ? AND classification = ?",
-      [targetOrder + (direction === "up" ? -1 : 1), targetClassification]
+      [targetOrder + (direction === "up" ? -1 : 1), targetClassification],
     );
 
     if (!adjacentPainting || adjacentPainting.length === 0) {
@@ -415,7 +443,7 @@ app.delete("/paintings/delete/:id", async (req, res) => {
     // Fetch the current order and classification of the target painting
     const targetPainting = await executeSQL(
       "SELECT display_order, classification FROM painting WHERE id = ?",
-      [id]
+      [id],
     );
 
     if (!targetPainting || targetPainting.length === 0) {
@@ -433,7 +461,7 @@ app.delete("/paintings/delete/:id", async (req, res) => {
     // Update display order for remaining paintings in the same classification
     await executeSQL(
       "UPDATE painting SET display_order = display_order - 1 WHERE display_order > ? AND classification = ?",
-      [targetOrder, targetClassification]
+      [targetOrder, targetClassification],
     );
 
     res.json({ success: true, message: "Painting deleted successfully" });

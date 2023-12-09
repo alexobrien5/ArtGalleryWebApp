@@ -300,25 +300,26 @@ contact-body {
   cursor: pointer;
 }
 
-/* Add styles for individual buttons as needed */
-.edit-btn {
-  background-color: #4caf50;
-  color: #fff;
+/* Add this CSS to your stylesheet */
+.edit-btn-icon,
+.delete-btn-icon,
+.moveup-btn-icon,
+.movedown-btn-icon {
+  cursor: pointer; /* Change the cursor to pointer on hover */
+  transition: background-image 0.3s ease;
 }
 
-.move-up-btn {
-  background-color: #2196f3;
-  color: #fff;
+.edit-btn-icon:hover {
+  color: blue; /* Change the color to blue on hover */
 }
 
-.delete-btn {
-  background-color: #f44336;
-  color: #fff;
+.delete-btn-icon:hover {
+  color: red; /* Change the color to red on hover */
 }
 
-.move-down-btn {
-  background-color: #2196f3;
-  color: #fff;
+.moveup-btn-icon:hover,
+.movedown-btn-icon:hover {
+  color: green; /* Change the color to green on hover for both move-up and move-down buttons */
 }
 
 /*----------------------------------------

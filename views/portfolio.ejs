@@ -5,18 +5,20 @@
             <h1 class="text-center">Diane's Portfolio</h1>
             <h2 class="quotes text-center"><q>Don't wait for others to bring you happiness. Get started on making your own.</q></h2>
             <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-          <% var classificationTypes = ['figurative', 'scapes', 'still', 'other']; %>
+          <% var classificationTypes = ['Figurative', 'Scapes', 'Still Life', 'Other']; %>
 
           <% classificationTypes.forEach(classificationType => { %>
             <div class="section" id="<%= classificationType %>">
               <h1 class="classification"><%= classificationType.charAt(0).toUpperCase() + classificationType.slice(1) %></h1>
-              <% eval(`${classificationType}`).forEach(painting => { %>
-                <% var availabilityStatus = (painting.availability === 0) ? 'Available' : 'Sold'; %>
+              <% paintings.filter(painting => painting.classification === classificationType).forEach(painting => { %>
+                <% var availabilityStatus = (painting.availability === 0) ? 'Sold' : 'Available'; %>
                 <a href="<%= painting.img_path %>" data-lightbox="<%= classificationType %>"
                   data-title="<%= painting.name %> <br>
                               <%= painting.dimensions %> <br>
+                              <% if (painting.location != '') { %>
+                              Plein Air <% } %>
                               <%= painting.media_type %> <br>
-                              <% if (painting.location != null) { %>
+                              <% if (painting.location != '') { %>
                               <%= painting.location %> <br> <% } %>
                               <%= availabilityStatus %>
                               <% if (availabilityStatus === 'Available') { %>
