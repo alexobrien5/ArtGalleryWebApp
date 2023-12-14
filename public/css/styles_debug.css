@@ -1,0 +1,62 @@
+/* Add the following CSS to your existing styles or in the head section of your HTML */
+.modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  width: 400px;
+  max-height: 70%; /* Set maximum height as needed */
+  overflow-y: auto; /* Enable vertical scrolling if content overflows */
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+.modal label {
+  display: block;
+  margin-bottom: 5px;
+  text-align: left; /* Align labels to the left */
+}
+
+/* Override styles for form within the modal */
+.modal form {
+  display: block; /* Use block instead of flex */
+}
+
+/* Override styles for input, select, and button within the modal */
+.modal input,
+.modal select,
+.modal button {
+  width: calc(100% - 20px); /* Adjust the width based on your preference */
+  margin: 5px 0; /* Adjust the margin as needed */
+  box-sizing: border-box;
+}
+
+.modal-buttons {
+  margin-top: 15px; /* Adjust the margin as needed */
+  text-align: center;
+}
+
+.modal button {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Remove the close (x) button at the top */
+.modal .close {
+  display: none;
+}
+
+/* .modal-content {
+  max-width: 80%; /* Set a maximum width for the content */
+  width: auto; /* Allow the width to adjust based on content */
+  max-height: 80vh; /* Set a maximum height for the content */
+  overflow-y: auto; /* Enable vertical scrolling if content exceeds max height */
+} */

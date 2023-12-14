@@ -1,0 +1,147 @@
+<%- include("partials/header.ejs") %>
+<body>
+    <%- include("partials/nav.ejs") %>
+      <div class="paintings-body">
+        <div class= "row justify-content-center">
+          <div class="col-lg-12 text-center">
+          <h1>Update Painting Information</h1>
+          <!-- table to show all information -->
+          <table class="painting_table">
+            <tr>
+              <th>Thumbnail</th> <!-- New column for thumbnail images -->
+              <th>Name</th>
+              <th>Dimensions</th>
+              <th>Classification</th>
+              <th>Media Type</th>
+              <th>Location</th>
+              <th>Availability</th>
+              <th>Action</th>
+              <th>Order</th>
+            </tr>
+
+            <% let currentClassification = null; %>
+            <% let currentClassificationRows = []; %>
+
+            <% paintings.forEach((painting, index, array) => { %>
+              <% if (painting.classification !== currentClassification) { %>
+                <% if (currentClassificationRows.length > 0) { %>
+                  <!-- Display rows within a classification -->
+                  <% currentClassificationRows.forEach((row, rowIndex) => { %>
+                    <tr>
+                      <td><img class="thumbs" src="<%= row.thm_path %>" alt="Thumbnail" style="width: 50px; height: 50px; border-radius: 5%;"></td> <!-- Display the thumbnail image -->
+                      <td><%= row.name %></td>
+                      <td><%= row.dimensions %></td>
+                      <td><%= row.classification %></td>
+                      <td><%= row.media_type %></td>
+                      <td><%= row.location %></td>
+                      <td><%= row.availability === 1 ? 'Available' : 'Sold' %></td>
+                      <td>
+                        <img src="/img/main/edit.png" alt="Edit" onclick="openEditModal('<%= row.id %>', '<%= row.name %>', '<%= row.dimensions %>', '<%= row.classification %>', '<%= row.media_type %>', '<%= row.location %>', '<%= row.availability %>')" class="edit-btn-icon">
+                          <img src="/img/main/delete.png" alt="Delete" onclick="deletePainting('<%= row.id %>')" class="delete-btn-icon">
+                      </td>
+                      <td>
+                        <div class="order-buttons">
+                          <% if (rowIndex !== 0) { %>
+                              <img src="/img/main/move-up.png" alt="Move Up" onclick="moveOrderUp('<%= row.id %>')" class="moveup-btn-icon">
+                          <% } %>
+                          <% if (rowIndex !== currentClassificationRows.length - 1) { %>
+                              <img src="/img/main/move-down.png" alt="Move Down" onclick="moveOrderDown('<%= row.id %>')" class="movedown-btn-icon">
+                          <% } %>
+                        </div>
+                      </td>
+                    </tr>
+                  <% }); %>
+                <% } %>
+
+                <!-- Add a new row for each classification -->
+                <tr class="classification-row">
+                  <td colspan="9"><strong><%= painting.classification %></strong></td>
+                </tr>
+                <% currentClassification = painting.classification; %>
+                <% currentClassificationRows = []; %>
+              <% } %>
+
+              <% currentClassificationRows.push(painting); %>
+            <% }); %>
+
+            <!-- Display the last set of rows within the last classification -->
+            <% currentClassificationRows.forEach((row, rowIndex) => { %>
+              <tr>
+                <td><img class="thumbs" src="<%= row.thm_path %>" alt="Thumbnail" style="width: 50px; height: 50px; border-radius: 5%;"></td> <!-- Display the thumbnail image -->
+                <td><%= row.name %></td>
+                <td><%= row.dimensions %></td>
+                <td><%= row.classification %></td>
+                <td><%= row.media_type %></td>
+                <td><%= row.location %></td>
+                <td><%= row.availability === 1 ? 'Available' : 'Sold' %></td>
+                <td>
+                  <img src="/img/main/edit.png" alt="Edit" onclick="openEditModal('<%= row.id %>', '<%= row.name %>', '<%= row.dimensions %>', '<%= row.classification %>', '<%= row.media_type %>', '<%= row.location %>', '<%= row.availability %>')" class="edit-btn-icon">
+                      <img src="/img/main/delete.png" alt="Delete" onclick="deletePainting('<%= row.id %>')" class="delete-btn-icon">
+                  </td>
+                  <td>
+                    <div class="order-buttons">
+                      <% if (rowIndex !== 0) { %>
+                          <img src="/img/main/move-up.png" alt="Move Up" onclick="moveOrderUp('<%= row.id %>')" class="moveup-btn-icon">
+                      <% } %>
+                      <% if (rowIndex !== currentClassificationRows.length - 1) { %>
+                          <img src="/img/main/move-down.png" alt="Move Down" onclick="moveOrderDown('<%= row.id %>')" class="movedown-btn-icon">
+                    <% } %>
+                  </div>
+                </td>
+              </tr>
+            <% }); %>
+          </table>
+              
+              <!-- Add a hidden modal for editing -->
+              <div id="editModal" class="modal">
+                <form id="editForm" method="post" action="/paintings/update/">
+                  <label for="editName">Name:</label>
+                  <input type="text" name="name" id="editName">
+
+                  <label for="editDimensions">Dimensions:</label>
+                  <input type="text" name="dimensions" id="editDimensions">
+
+                  <label for="editClassification">Classification:</label>
+                  <select name="classification" id="editClassification">
+                    <option value="Figurative">Figurative</option>
+                    <option value="Scapes">Scapes</option>
+                    <option value="Still Life">Still Life</option>
+                    <option value="Other">Other</option>
+                    <!-- Add more options as needed -->
+                  </select>
+
+                  <label for="editMediaType">Media Type:</label>
+                  <select name="media_type" id="editMediaType">
+                    <option value="Oil">Oil</option>
+                    <option value="Watercolor">Watercolor</option>
+                    <option value="Conte Crayon">Conte Crayon</option>
+                    <option value="Charcoal">Charcoal</option>
+                    <option value="Gouache">Gouache</option>
+                    <option value="Pastel">Pastel</option>
+                    <!-- Add more options as needed -->
+                  </select>
+
+                  <label for="editLocation">Location (if Plein Air):</label>
+                  <input type="text" name="location" id="editLocation">
+
+                  <label>Availability:</label>
+                  <!-- Availability Radio Buttons -->
+                  <div class="availability-option">
+                    <label for="editAvailable">Available</label>
+                    <input type="radio" id="editAvailable" name="availability" value="1">
+                    <label for="editSold">Sold</label>
+                    <input type="radio" id="editSold" name="availability" value="0">
+                  </div>
+
+                  <div class="modal-buttons">
+                    <button type="submit">Update</button>
+                    <button type="button" onclick="closeEditModal()" style="background-color: red;">Cancel</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            </div>
+            </div>
+<%- include("partials/footer.ejs") %>
+</body>
+</html>

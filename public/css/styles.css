@@ -24,7 +24,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .quotes {
-    font-family: 'Ephesis', cursive;
+  font-family: 'Kaushan Script', cursive;
 }
 
 .upload-body{
@@ -143,8 +143,8 @@ contact-body {
 
 /* format image view to all squares */
 .portfolio-body img {
-    width: 150px; /* Set the desired size for your square images */
-    height: 150px;
+    width: 350px; /* Set the desired size for your square images */
+    height: 350px;
     object-fit: cover; /* Crop to the center while maintaining aspect ratio */
     margin: 5px; /* Add some spacing between images */
     border-radius: 5%;
@@ -160,6 +160,166 @@ contact-body {
 
 .section a {
     text-decoration: none; /* Remove blue dashes from in between pictures */
+}
+
+
+/*----------------------------------------
+    PAINTINGS
+----------------------------------------*/
+
+.painting_table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.painting_table table, th, td {
+  border: 1px solid #ddd;
+}
+
+.painting_table th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+.painting_table th {
+  background-color: #f2f2f2;
+}
+
+.painting_table form {
+  display: flex;
+  align-items: center;
+}
+
+.painting_table input, select, button {
+  margin: 5px;
+}
+
+/* Add the following CSS to your existing styles or in the head section of your HTML */
+.modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  width: 400px;
+  max-height: 54%; /* Set maximum height as needed */
+  overflow-y: auto; /* Enable vertical scrolling if content overflows */
+  /* overflow-x: auto; */
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+.modal label {
+  display: block;
+  margin-bottom: 5px;
+  text-align: left; /* Align labels to the left */
+}
+
+/* Override styles for form within the modal */
+.modal form {
+  display: block; /* Use block instead of flex */
+}
+
+/* Override styles for input, select, and button within the modal */
+.modal input,
+.modal select,
+.modal button {
+  width: calc(100% - 20px); /* Adjust the width based on your preference */
+  margin: 5px 0; /* Adjust the margin as needed */
+  box-sizing: border-box;
+}
+
+.modal-buttons {
+  margin-top: 15px; /* Adjust the margin as needed */
+  text-align: center;
+}
+
+.modal button {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Remove the close (x) button at the top */
+.modal .close {
+  display: none;
+}
+
+.modal-content {
+  max-width: 80%; /* Set a maximum width for the content */
+  width: auto; /* Allow the width to adjust based on content */
+  max-height: 80vh; /* Set a maximum height for the content */
+  overflow-y: auto; /* Enable vertical scrolling if content exceeds max height */
+}
+
+.availability-option {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.availability-option label {
+  margin-right: 10px; /* Adjust as needed to provide spacing between label and radio button */
+}
+
+/* Media query for screens smaller than 600px */
+@media screen and (max-width: 600px) {
+  .availability-option {
+    flex-direction: column; /* Change to a column layout for smaller screens */
+    align-items: flex-start; /* Align items to the start for better readability */
+  }
+
+  .availability-option label {
+    margin-right: 0; /* Remove right margin for labels */
+    margin-bottom: 5px; /* Add bottom margin for better spacing */
+  }
+}
+
+.classification-row {
+  background-color: #f2f2f2; /* Set a background color for classification rows */
+}
+
+.action-cell {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px; /* Adjust the gap as needed */
+  align-items: center;
+}
+
+.edit-btn, .move-up-btn, .delete-btn, .move-down-btn {
+  width: 100%; /* Adjust the width as needed */
+  height: 48px; /* Adjust the height as needed */
+  font-size: 20px; /* Adjust the font size as needed */
+  cursor: pointer;
+}
+
+/* Add this CSS to your stylesheet */
+.edit-btn-icon,
+.delete-btn-icon,
+.moveup-btn-icon,
+.movedown-btn-icon {
+  cursor: pointer; /* Change the cursor to pointer on hover */
+  transition: background-image 0.3s ease;
+}
+
+.edit-btn-icon:hover {
+  color: blue; /* Change the color to blue on hover */
+}
+
+.delete-btn-icon:hover {
+  color: red; /* Change the color to red on hover */
+}
+
+.moveup-btn-icon:hover,
+.movedown-btn-icon:hover {
+  color: green; /* Change the color to green on hover for both move-up and move-down buttons */
 }
 
 /*----------------------------------------
@@ -221,6 +381,10 @@ html {
 
 body {
     margin-bottom: 50px;
+}
+
+.footer_socials a {
+  text-decoration: none;
 }
 
 .socials img {
