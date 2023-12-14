@@ -11,12 +11,12 @@
           <p>Complete to add new images</p>
 
       <!DOCTYPE html>
-      <form action="/upload" method="POST" enctype="multipart/form-data">
+      <form action="/upload" method="POST" id="uploadForm" enctype="multipart/form-data">
       <div class="form group">
-          <input type="text" placeholder="Enter Painting Name" name="name" />
+          <input class="name" type="text" placeholder="Enter Painting Name" name="name" />
          <br><br>
 
-          <input type="text" placeholder="Enter Painting Dimensions"  name="dimensions" />
+          <input class="dimensions" type="text" placeholder="Enter Painting Dimensions"  name="dimensions" />
          <br><br>
 
 
@@ -35,7 +35,7 @@
             <input type="text" id="paintingLocation" placeholder="Enter Location" name="location" />
         </div>
 
-        <select name="classification">
+        <select class="classification" name="classification">
          <option disabled selected value> -- Select a classification</option>
          <option value="Figurative">Figurative</option>
          <option value="Scapes">Scapes</option>
@@ -44,7 +44,7 @@
         </select>
         <br><br>
 
-        <select name="type">
+        <select class="type" name="type">
          <option disabled selected value> -- Select a media type</option>
          <option value="Watercolor">Watercolor</option>
          <option value="Oil">Oil</option>
@@ -55,13 +55,13 @@
         </select>
         <br><br>
         
-        <input type="radio" name="available" value="1">
+        <input type="radio" name="available" checked="checked" value="1">
         <label for="avail">Available</label>
 
         <input type="radio" name="available" value="0">
         <label for="not-avail">Sold</label>
         <br>  <br>  
-          <input type="file" name="image" />
+          <input class="imageUpload" type="file" name="image" />
           <button type="submit" class = "btn btn-dark">Upload</button>
         <br><br>
 

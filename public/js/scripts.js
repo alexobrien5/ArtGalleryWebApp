@@ -13,6 +13,54 @@ $(".dropdown-item").on("click", function (event) {
   $(".navbar-collapse").collapse("hide");
 });
 
+//event listener
+
+if (document.getElementById('uploadForm')) {
+    document.querySelector("#uploadForm").addEventListener("submit",
+        function(event) {
+            validateNewUpload(event);
+        });
+}
+
+//form validation
+function validateNewUpload(e) {
+    let isValid = true;
+    let paintingName = document.querySelector(".name").value;
+    let paintingDimensions = document.querySelector(".dimensions").value;
+    let classification = document.querySelector(".classification").value;
+    let paintingType = document.querySelector(".type").value; 
+    let imageUpload = document.querySelector(".imageUpload").value;
+
+    if (paintingName.length == 0) {
+        alert('Painting Name Required');
+        isValid = false;
+    }
+
+    if (paintingDimensions.length == 0) {
+        alert('Painting Dimensions Required');
+        isValid = false;
+    }
+
+    if (classification.length == 0) {
+        alert('Please Select A Classification');
+        isValid = false;
+    }
+    
+    if (paintingType.length == 0) {
+        alert('Please Select A Media Type');
+        isValid = false;
+    }
+  
+    if (imageUpload.length == 0) {
+        alert('Please Select A File To Upload');
+        isValid = false;
+    }
+
+    if (!isValid) {
+        e.preventDefault(); //prevents form from being submitted
+    }
+}
+
 // modal scripts
 document.addEventListener("DOMContentLoaded", function () {
   var modal = document.getElementById("editModal");

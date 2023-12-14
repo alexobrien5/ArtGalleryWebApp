@@ -8,7 +8,7 @@
           <% var classificationTypes = ['Figurative', 'Scapes', 'Still Life', 'Other']; %>
 
           <% classificationTypes.forEach(classificationType => { %>
-            <div class="section" id="<%= classificationType %>">
+            <div class="section" id="<%= classificationType.replace(/\s+/g, '-').toLowerCase() %>">
               <h1 class="classification"><%= classificationType.charAt(0).toUpperCase() + classificationType.slice(1) %></h1>
               <% paintings.filter(painting => painting.classification === classificationType).forEach(painting => { %>
                 <% var availabilityStatus = (painting.availability === 0) ? 'Sold' : 'Available'; %>

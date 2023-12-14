@@ -72,7 +72,8 @@ app.get("/portfolio", async (req, res) => {
   let user = req.session.user;
   let page = "portfolio";
   let paintings = await executeSQL(
-    `SELECT * FROM painting ORDER BY FIELD(classification, 'Figurative', 'Scapes', 'Still Life', 'Other'), display_order`,
+    `SELECT * FROM painting ORDER BY FIELD(classification, 'Figurative', 'Scapes',
+    'Still Life', 'Other'), display_order`,
   );
   let classificationTypes = ["figurative", "scapes", "still life", "other"];
 
@@ -90,7 +91,7 @@ app.get("/contact", (req, res) => {
   res.render("contact", { page_name: page, userID: user });
 }); //contact
 
-app.get("/upload", (req, res) => {
+app.get("/upload", isAuthenticated, (req, res) => {
   let user = req.session.user;
   let page = "upload";
   res.render("upload", { page_name: page, userID: user });
@@ -100,7 +101,8 @@ app.get("/paintings", async (req, res) => {
   let user = req.session.user;
   let page = "manage";
   let paintings = await executeSQL(
-    `SELECT * FROM painting ORDER BY FIELD(classification, 'Figurative', 'Scapes', 'Still Life', 'Other'), display_order`,
+    `SELECT * FROM painting ORDER BY FIELD(classification, 'Figurative', 
+    'Scapes', 'Still Life', 'Other'), display_order`,
   );
   res.render("paintings", { paintings, page_name: page, userID: user });
 }); //paintings
@@ -172,7 +174,7 @@ app.post("/upload", async function (req, res) {
   let location = req.body.location;
   let available = req.body.available;
 
-  // temp values until the image file type is checked, required for not null values
+  // declaring image file path variables
   let img_path;
   let thm_path;
   let img_short_path;
@@ -198,13 +200,8 @@ app.post("/upload", async function (req, res) {
   let rows2 = await executeSQL(sql2);
   let paintingId = rows2[0].id + 1;
 
-  // Move the uploaded image to our upload folder
-  // add logic for choosing file type based on the image.name.
-  // psuedocode
-  // read last 3 digits of image file uploaded
-  // based on that, if/then statements for creating the imgPath and thmPath paths
+  // Define image file path variables
   var imgFileUpload = image.name.split(".").pop();
-  console.log(imgFileUpload);
   if (
     imgFileUpload.toLowerCase() === "jpg" ||
     imgFileUpload.toLowerCase() === "jpeg"
@@ -220,7 +217,7 @@ app.post("/upload", async function (req, res) {
     thm_short_path = "/upload/thm" + paintingId + ".png";
   }
 
-  //use async/await with image.mv
+  // Move the uploaded image to our upload folder
   try {
     await image.mv(img_path);
     // console.log(img_path);
@@ -247,8 +244,8 @@ app.post("/upload", async function (req, res) {
 
   // if all tests pass, insert into database
   //SQL Insert
-  let sql =
-    "INSERT INTO painting (name, dimensions, classification, media_type, location, availability, img_path, thm_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+  let sql = `INSERT INTO painting (name, dimensions, classification, media_type, location,
+    availability, img_path, thm_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
   let params = [
     name,
     dimensions,
@@ -319,7 +316,8 @@ app.post("/paintings/update/:id", async (req, res) => {
 
   // Update the classification of the target painting
   await executeSQL(
-    "UPDATE painting SET name=?, dimensions=?, classification=?, media_type=?, location=?, availability=?, display_order=? WHERE id=?",
+    `UPDATE painting SET name=?, dimensions=?, classification=?, media_type=?,
+    location=?, availability=?, display_order=? WHERE id=?`,
     [
       name,
       dimensions,
@@ -347,11 +345,12 @@ app.post("/paintings/update/:id", async (req, res) => {
   if (classification !== targetClassification && !newClassification) {
     // Move paintings with display_order greater than the target order down - OLD CLASS
     await executeSQL(
-      "UPDATE painting SET display_order = display_order - 1 WHERE display_order > ? AND classification = ?",
+      `UPDATE painting SET display_order = display_order - 1 WHERE
+      display_order > ? AND classification = ?`,
       [targetOrder, targetClassification],
     );
 
-    // Increment the display order for paintings with the same or greater display order - NEW CLASS
+    // Increment the display order for paintings with the same or greater display order
     // Move everything else down by 1 first
     await executeSQL(
       "UPDATE painting SET display_order = display_order + 1 WHERE classification = ?",
@@ -369,7 +368,8 @@ app.post("/paintings/update/:id", async (req, res) => {
   if (classification !== targetClassification && newClassification) {
     // Move paintings with display_order greater than the target order down
     await executeSQL(
-      "UPDATE painting SET display_order = display_order - 1 WHERE display_order > ? AND classification = ?",
+      `UPDATE painting SET display_order = display_order - 1 WHERE display_order > ?
+      AND classification = ?`,
       [targetOrder, targetClassification],
     );
 
@@ -403,7 +403,8 @@ app.post("/paintings/move-order/:id", async (req, res) => {
 
     // Fetch the adjacent painting based on the target order
     const adjacentPainting = await executeSQL(
-      "SELECT id, display_order FROM painting WHERE display_order = ? AND classification = ?",
+      `SELECT id, display_order FROM painting WHERE display_order = ?
+      AND classification = ?`,
       [targetOrder + (direction === "up" ? -1 : 1), targetClassification],
     );
 
@@ -460,7 +461,8 @@ app.delete("/paintings/delete/:id", async (req, res) => {
 
     // Update display order for remaining paintings in the same classification
     await executeSQL(
-      "UPDATE painting SET display_order = display_order - 1 WHERE display_order > ? AND classification = ?",
+      `UPDATE painting SET display_order = display_order - 1 WHERE display_order > ?
+      AND classification = ?`,
       [targetOrder, targetClassification],
     );
 
@@ -470,6 +472,13 @@ app.delete("/paintings/delete/:id", async (req, res) => {
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 });
+
+/* -----------------------------------
+            404 ROUTE 
+------------------------------------*/
+app.use((req, res) => {
+  res.status(404).render("404");
+}); //404 message
 
 /* -----------------------------------
             FUNCTIONS
@@ -515,10 +524,6 @@ async function mainMail(name, email, subject, message) {
     return Promise.reject(error);
   }
 } //mainMail
-
-// findMaxOrder() => {
-
-// });
 
 app.listen(3000, () => {
   console.log("Expresss server running...");
